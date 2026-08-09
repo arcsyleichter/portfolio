@@ -1,5 +1,6 @@
 "use client";
 
+import type { DraggableAttributes, DraggableSyntheticListeners } from "@dnd-kit/core";
 import type { Block } from "@/lib/builder/types";
 import { RichTextEditor } from "./rich-text-editor";
 import { ImageUploadField } from "./image-upload-field";
@@ -7,7 +8,7 @@ import { ImageUploadField } from "./image-upload-field";
 const FIELD_CLASS =
   "w-full rounded-lg border border-border bg-background/40 px-3.5 py-2.5 text-sm outline-none focus:border-gold";
 
-const TYPE_LABELS: Record<Block["type"], string> = {
+export const TYPE_LABELS: Record<Block["type"], string> = {
   heading: "Cím",
   richtext: "Szöveg",
   image: "Kép",
@@ -24,15 +25,49 @@ interface Props {
   onDelete: () => void;
   canMoveUp: boolean;
   canMoveDown: boolean;
+  dragHandleAttributes?: DraggableAttributes;
+  dragHandleListeners?: DraggableSyntheticListeners;
 }
 
-export function BlockEditorCard({ block, onChange, onMoveUp, onMoveDown, onDelete, canMoveUp, canMoveDown }: Props) {
+export function BlockEditorCard({
+  block,
+  onChange,
+  onMoveUp,
+  onMoveDown,
+  onDelete,
+  canMoveUp,
+  canMoveDown,
+  dragHandleAttributes,
+  dragHandleListeners,
+}: Props) {
   return (
     <div className="rounded-2xl border border-border bg-card/60 p-5 shadow-md shadow-black/10">
       <div className="flex items-center justify-between gap-3">
-        <span className="rounded-full border border-tech-blue/30 px-2.5 py-1 text-xs font-medium text-tech-blue-light">
-          {TYPE_LABELS[block.type]}
-        </span>
+        <div className="flex items-center gap-2">
+          {dragHandleListeners && (
+            <button
+              type="button"
+              {...dragHandleAttributes}
+              {...dragHandleListeners}
+              aria-label="Blokk húzása az átrendezéshez"
+              title="Húzd az átrendezéshez"
+              style={{ touchAction: "none" }}
+              className="flex h-8 w-8 cursor-grab items-center justify-center rounded-lg text-muted-foreground hover:bg-muted active:cursor-grabbing"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                <circle cx="9" cy="6" r="1.5" />
+                <circle cx="9" cy="12" r="1.5" />
+                <circle cx="9" cy="18" r="1.5" />
+                <circle cx="15" cy="6" r="1.5" />
+                <circle cx="15" cy="12" r="1.5" />
+                <circle cx="15" cy="18" r="1.5" />
+              </svg>
+            </button>
+          )}
+          <span className="rounded-full border border-tech-blue/30 px-2.5 py-1 text-xs font-medium text-tech-blue-light">
+            {TYPE_LABELS[block.type]}
+          </span>
+        </div>
         <div className="flex items-center gap-1.5">
           <button
             type="button"

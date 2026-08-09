@@ -2,9 +2,25 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import {
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  KeyboardSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+  useDroppable,
+  type DragStartEvent,
+  type DragOverEvent,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy, arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import type { BlogPostDocument, Block, BlockType } from "@/lib/builder/types";
 import { createBlock } from "@/lib/builder/defaults";
-import { BlockEditorCard } from "./block-editor-card";
+import { TYPE_LABELS } from "./block-editor-card";
+import { SortableBlockCard } from "./sortable-block-card";
+import { PaletteItem } from "./palette-item";
 import { DeletePostButton } from "./delete-post-button";
 
 const ADDABLE_TYPES: { type: BlockType; label: string }[] = [
@@ -15,12 +31,33 @@ const ADDABLE_TYPES: { type: BlockType; label: string }[] = [
   { type: "spacer", label: "+ Térköz" },
 ];
 
+type DragState = { type: "block"; blockId: string } | { type: "palette"; blockType: BlockType } | null;
+
+function CanvasEndDropZone({ active }: { active: boolean }) {
+  const { setNodeRef, isOver } = useDroppable({ id: "canvas-end" });
+  if (!active) return null;
+  return (
+    <div
+      ref={setNodeRef}
+      aria-hidden
+      className={`h-3 rounded-full transition-colors ${isOver ? "bg-gold" : "bg-transparent"}`}
+    />
+  );
+}
+
 export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
   const [doc, setDoc] = useState(initialDoc);
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
+  const [dragState, setDragState] = useState<DragState>(null);
+  const [overIndex, setOverIndex] = useState<number | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
 
   function patchDoc(patch: Partial<BlogPostDocument>) {
     setDoc((d) => ({ ...d, ...patch }));
@@ -47,6 +84,54 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
 
   function addBlock(type: BlockType) {
     patchDoc({ blocks: [...doc.blocks, createBlock(type)] });
+  }
+
+  function insertBlockAt(type: BlockType, index: number) {
+    const blocks = [...doc.blocks];
+    blocks.splice(index, 0, createBlock(type));
+    patchDoc({ blocks });
+  }
+
+  function handleDragStart(event: DragStartEvent) {
+    const data = event.active.data.current as { type: "block" } | { type: "palette"; blockType: BlockType };
+    setDragState(data.type === "palette" ? { type: "palette", blockType: data.blockType } : { type: "block", blockId: String(event.active.id) });
+  }
+
+  function handleDragOver(event: DragOverEvent) {
+    const { active, over } = event;
+    if ((active.data.current as { type?: string } | undefined)?.type !== "palette") return;
+    if (!over) {
+      setOverIndex(null);
+      return;
+    }
+    if (over.id === "canvas-end") {
+      setOverIndex(doc.blocks.length);
+      return;
+    }
+    const idx = doc.blocks.findIndex((b) => b.id === over.id);
+    setOverIndex(idx === -1 ? doc.blocks.length : idx);
+  }
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    const insertAt = overIndex;
+    setDragState(null);
+    setOverIndex(null);
+    if (!over) return;
+
+    const activeData = active.data.current as { type: "block" } | { type: "palette"; blockType: BlockType };
+    if (activeData.type === "palette") {
+      insertBlockAt(activeData.blockType, insertAt ?? doc.blocks.length);
+      return;
+    }
+
+    if (active.id !== over.id) {
+      const oldIndex = doc.blocks.findIndex((b) => b.id === active.id);
+      const newIndex = doc.blocks.findIndex((b) => b.id === over.id);
+      if (oldIndex !== -1 && newIndex !== -1) {
+        patchDoc({ blocks: arrayMove(doc.blocks, oldIndex, newIndex) });
+      }
+    }
   }
 
   async function save(nextStatus: BlogPostDocument["status"]) {
@@ -173,38 +258,64 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
         </p>
       </div>
 
-      <div className="mt-6 flex flex-col gap-4">
-        {doc.blocks.map((block, i) => (
-          <BlockEditorCard
-            key={block.id}
-            block={block}
-            onChange={(next) => updateBlock(block.id, next)}
-            onMoveUp={() => moveBlock(block.id, -1)}
-            onMoveDown={() => moveBlock(block.id, 1)}
-            onDelete={() => deleteBlock(block.id)}
-            canMoveUp={i > 0}
-            canMoveDown={i < doc.blocks.length - 1}
-          />
-        ))}
-        {doc.blocks.length === 0 && (
-          <p className="rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-            Még nincs egy blokk sem — adj hozzá egyet lentről.
-          </p>
-        )}
-      </div>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+        onDragCancel={() => {
+          setDragState(null);
+          setOverIndex(null);
+        }}
+      >
+        <div className="mt-6 flex flex-col gap-4">
+          <SortableContext items={doc.blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
+            {doc.blocks.map((block, i) => (
+              <SortableBlockCard
+                key={block.id}
+                block={block}
+                onChange={(next) => updateBlock(block.id, next)}
+                onMoveUp={() => moveBlock(block.id, -1)}
+                onMoveDown={() => moveBlock(block.id, 1)}
+                onDelete={() => deleteBlock(block.id)}
+                canMoveUp={i > 0}
+                canMoveDown={i < doc.blocks.length - 1}
+                showInsertionLineBefore={dragState?.type === "palette" && overIndex === i}
+              />
+            ))}
+          </SortableContext>
+          {doc.blocks.length === 0 && (
+            <p className="rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+              Még nincs egy blokk sem — adj hozzá egyet lentről, vagy húzd ide.
+            </p>
+          )}
+          <CanvasEndDropZone active={dragState?.type === "palette"} />
+        </div>
 
-      <div className="mt-6 flex flex-wrap gap-2">
-        {ADDABLE_TYPES.map(({ type, label }) => (
-          <button
-            key={type}
-            type="button"
-            onClick={() => addBlock(type)}
-            className="cursor-pointer rounded-full border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+        <div className="mt-6 flex flex-wrap gap-2">
+          {ADDABLE_TYPES.map(({ type, label }) => (
+            <PaletteItem key={type} type={type} label={label} onClick={() => addBlock(type)} />
+          ))}
+        </div>
+
+        <DragOverlay>
+          {dragState?.type === "palette" && (
+            <div className="rounded-full border border-gold/50 bg-card px-4 py-2 text-sm font-medium shadow-lg shadow-black/20">
+              {TYPE_LABELS[dragState.blockType]}
+            </div>
+          )}
+          {dragState?.type === "block" &&
+            (() => {
+              const block = doc.blocks.find((b) => b.id === dragState.blockId);
+              return block ? (
+                <div className="rounded-2xl border border-gold/50 bg-card px-5 py-3 text-sm font-medium shadow-lg shadow-black/20">
+                  {TYPE_LABELS[block.type]}
+                </div>
+              ) : null;
+            })()}
+        </DragOverlay>
+      </DndContext>
     </div>
   );
 }
