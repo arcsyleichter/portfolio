@@ -6,6 +6,9 @@ import { ImageBlockView } from "./image-block";
 import { ButtonBlockView } from "./button-block";
 import { SpacerBlockView } from "./spacer-block";
 import { ColumnsBlockView } from "./columns-block";
+import { GalleryBlockView } from "./gallery-block";
+import { CarouselBlockView } from "./carousel-block";
+import { CtaBlockView } from "./cta-block";
 
 /**
  * The single shared renderer for a block tree — used both by the public
@@ -38,5 +41,11 @@ function BlockView({ block }: { block: Block }) {
       return <SpacerBlockView block={block} />;
     case "columns":
       return <ColumnsBlockView block={block} />;
+    case "gallery":
+      return <GalleryBlockView block={block} />;
+    case "carousel":
+      return <CarouselBlockView block={block} />;
+    case "cta":
+      return <CtaBlockView block={block} />;
   }
 }

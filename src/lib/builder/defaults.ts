@@ -50,6 +50,32 @@ export function createBlock(type: BlockType): Block {
         content: { columns: [[], []] },
         style: { ratio: "50/50", gap: "md" },
       };
+    case "gallery":
+      return {
+        id: id(),
+        type: "gallery",
+        content: { images: [] },
+        style: { columns: 3, radius: "xl", gap: "md" },
+      };
+    case "carousel":
+      return {
+        id: id(),
+        type: "carousel",
+        content: { slides: [] },
+        style: { radius: "xl", maxWidth: "content" },
+      };
+    case "cta":
+      return {
+        id: id(),
+        type: "cta",
+        content: {
+          heading: "Kezdjünk bele",
+          text: "Rövid, meggyőző szöveg, ami a cselekvésre ösztönöz.",
+          buttonLabel: "Kapcsolatfelvétel",
+          buttonHref: "#",
+        },
+        style: { tone: "gold", align: "center" },
+      };
   }
 }
 

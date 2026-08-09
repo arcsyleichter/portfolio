@@ -14,6 +14,7 @@ const alignSchema = z.enum(["left", "center", "right"]);
 const spacingSchema = z.enum(["none", "sm", "md", "lg", "xl"]);
 const radiusSchema = z.enum(["none", "sm", "md", "lg", "xl", "2xl", "full"]);
 const maxWidthSchema = z.enum(["prose", "narrow", "content", "wide", "full"]);
+const toneSchema = z.enum(["gold", "gold-light", "charcoal", "tech-blue", "tech-blue-light", "cream", "ink"]);
 
 // Tiptap documents are arbitrary recursive JSON — validated structurally
 // (must be a plain object with a "type" string) rather than modeling every
@@ -75,6 +76,37 @@ const spacerBlockSchema = baseBlockSchema.extend({
   style: z.object({ height: spacingSchema }),
 });
 
+const galleryBlockSchema = baseBlockSchema.extend({
+  type: z.literal("gallery"),
+  content: z.object({
+    images: z.array(z.object({ blobKey: z.string(), alt: z.string() })),
+  }),
+  style: z.object({
+    columns: z.union([z.literal(2), z.literal(3), z.literal(4)]),
+    radius: radiusSchema,
+    gap: spacingSchema,
+  }),
+});
+
+const carouselBlockSchema = baseBlockSchema.extend({
+  type: z.literal("carousel"),
+  content: z.object({
+    slides: z.array(z.object({ blobKey: z.string(), alt: z.string(), caption: z.string().optional() })),
+  }),
+  style: z.object({ radius: radiusSchema, maxWidth: maxWidthSchema }),
+});
+
+const ctaBlockSchema = baseBlockSchema.extend({
+  type: z.literal("cta"),
+  content: z.object({
+    heading: z.string(),
+    text: z.string(),
+    buttonLabel: z.string(),
+    buttonHref: z.string(),
+  }),
+  style: z.object({ tone: toneSchema, align: alignSchema }),
+});
+
 // `columns` nests full block lists, so it's tied together with
 // z.lazy(() => blockSchema) below rather than being fully self-contained.
 const columnsBlockSchemaShape = {
@@ -92,6 +124,9 @@ export const blockSchema: z.ZodType<Block> = z.lazy(() =>
     imageBlockSchema,
     buttonBlockSchema,
     spacerBlockSchema,
+    galleryBlockSchema,
+    carouselBlockSchema,
+    ctaBlockSchema,
     baseBlockSchema.extend({
       ...columnsBlockSchemaShape,
       content: z.object({ columns: z.array(z.array(blockSchema)) }),

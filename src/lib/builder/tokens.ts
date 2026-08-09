@@ -1,4 +1,4 @@
-import type { AlignToken, MaxWidthToken, RadiusToken, SpacingToken } from "./types";
+import type { AlignToken, MaxWidthToken, RadiusToken, SpacingToken, ToneToken } from "./types";
 
 export const TEXT_ALIGN_CLASSES: Record<AlignToken, string> = {
   left: "text-left",
@@ -54,4 +54,15 @@ export const MAX_WIDTH_CLASSES: Record<MaxWidthToken, string> = {
   content: "max-w-2xl",
   wide: "max-w-4xl",
   full: "max-w-full",
+};
+
+/** Solid/gradient background + matching text color for a tone — used by the CTA block. */
+export const TONE_BG_CLASSES: Record<ToneToken, string> = {
+  gold: "bg-gradient-brand text-ink",
+  "gold-light": "bg-gold-light text-ink",
+  charcoal: "bg-charcoal-elevated text-cream",
+  "tech-blue": "bg-gradient-to-br from-tech-blue to-tech-blue-light text-ink",
+  "tech-blue-light": "bg-tech-blue-light text-ink",
+  cream: "bg-cream text-ink",
+  ink: "bg-ink text-cream",
 };

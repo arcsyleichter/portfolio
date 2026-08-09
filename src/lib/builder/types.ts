@@ -72,13 +72,34 @@ export interface ColumnsBlock extends BaseBlock {
   style: { ratio: "50/50" | "60/40" | "33/33/33"; gap: SpacingToken };
 }
 
+export interface GalleryBlock extends BaseBlock {
+  type: "gallery";
+  content: { images: { blobKey: string; alt: string }[] };
+  style: { columns: 2 | 3 | 4; radius: RadiusToken; gap: SpacingToken };
+}
+
+export interface CarouselBlock extends BaseBlock {
+  type: "carousel";
+  content: { slides: { blobKey: string; alt: string; caption?: string }[] };
+  style: { radius: RadiusToken; maxWidth: MaxWidthToken };
+}
+
+export interface CtaBlock extends BaseBlock {
+  type: "cta";
+  content: { heading: string; text: string; buttonLabel: string; buttonHref: string };
+  style: { tone: ToneToken; align: AlignToken };
+}
+
 export type Block =
   | HeadingBlock
   | RichTextBlock
   | ImageBlock
   | ButtonBlock
   | SpacerBlock
-  | ColumnsBlock;
+  | ColumnsBlock
+  | GalleryBlock
+  | CarouselBlock
+  | CtaBlock;
 
 export type BlockType = Block["type"];
 

@@ -1,10 +1,15 @@
 "use client";
 
 import type { DraggableAttributes, DraggableSyntheticListeners } from "@dnd-kit/core";
-import type { Block, BlockType, ColumnsBlock } from "@/lib/builder/types";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import type { Block, BlockType, CarouselBlock, ColumnsBlock, CtaBlock, GalleryBlock } from "@/lib/builder/types";
 import { createBlock } from "@/lib/builder/defaults";
+import { columnContainerId, columnEndDropId } from "@/lib/builder/block-tree";
 import { RichTextEditor } from "./rich-text-editor";
 import { ImageUploadField } from "./image-upload-field";
+import { SortableBlockCard } from "./sortable-block-card";
+import { ContainerEndDropZone } from "./container-end-drop-zone";
+import { useBuilderDndUi } from "./builder-dnd-ui-context";
 
 const FIELD_CLASS =
   "w-full rounded-lg border border-border bg-background/40 px-3.5 py-2.5 text-sm outline-none focus:border-gold";
@@ -17,6 +22,9 @@ const NESTED_ADDABLE_TYPES: { type: Exclude<BlockType, "columns">; label: string
   { type: "image", label: "+ Kép" },
   { type: "button", label: "+ Gomb" },
   { type: "spacer", label: "+ Térköz" },
+  { type: "gallery", label: "+ Galéria" },
+  { type: "carousel", label: "+ Carousel" },
+  { type: "cta", label: "+ CTA" },
 ];
 
 const RATIO_OPTIONS: { value: ColumnsBlock["style"]["ratio"]; label: string; columnCount: number }[] = [
@@ -32,6 +40,8 @@ function resizeColumns(cols: Block[][], count: number): Block[][] {
 }
 
 function ColumnsBlockEditor({ block, onChange }: { block: ColumnsBlock; onChange: (b: ColumnsBlock) => void }) {
+  const { dragState } = useBuilderDndUi();
+
   function updateColumn(index: number, blocks: Block[]) {
     onChange({ ...block, content: { columns: block.content.columns.map((c, i) => (i === index ? blocks : c)) } });
   }
@@ -67,53 +77,231 @@ function ColumnsBlockEditor({ block, onChange }: { block: ColumnsBlock; onChange
       </div>
 
       <div className={`grid grid-cols-1 gap-3 ${block.content.columns.length >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
-        {block.content.columns.map((colBlocks, colIndex) => (
-          <div key={colIndex} className="flex flex-col gap-3 rounded-xl border border-dashed border-border p-3">
-            <p className="text-xs font-medium text-muted-foreground">{colIndex + 1}. oszlop</p>
+        {block.content.columns.map((colBlocks, colIndex) => {
+          const containerId = columnContainerId(block.id, colIndex);
+          return (
+            <div key={colIndex} className="flex flex-col gap-3 rounded-xl border border-dashed border-border p-3">
+              <p className="text-xs font-medium text-muted-foreground">{colIndex + 1}. oszlop</p>
 
-            {colBlocks.map((nested, i) => (
-              <BlockEditorCard
-                key={nested.id}
-                block={nested}
-                onChange={(next) => updateColumn(colIndex, colBlocks.map((b) => (b.id === nested.id ? next : b)))}
-                onMoveUp={() => {
-                  if (i === 0) return;
-                  const next = [...colBlocks];
-                  [next[i - 1], next[i]] = [next[i], next[i - 1]];
-                  updateColumn(colIndex, next);
-                }}
-                onMoveDown={() => {
-                  if (i === colBlocks.length - 1) return;
-                  const next = [...colBlocks];
-                  [next[i], next[i + 1]] = [next[i + 1], next[i]];
-                  updateColumn(colIndex, next);
-                }}
-                onDelete={() => updateColumn(colIndex, colBlocks.filter((b) => b.id !== nested.id))}
-                canMoveUp={i > 0}
-                canMoveDown={i < colBlocks.length - 1}
-              />
-            ))}
+              <SortableContext items={colBlocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
+                {colBlocks.map((nested, i) => (
+                  <SortableBlockCard
+                    key={nested.id}
+                    block={nested}
+                    containerId={containerId}
+                    index={i}
+                    onChange={(next) => updateColumn(colIndex, colBlocks.map((b) => (b.id === nested.id ? next : b)))}
+                    onMoveUp={() => {
+                      if (i === 0) return;
+                      const next = [...colBlocks];
+                      [next[i - 1], next[i]] = [next[i], next[i - 1]];
+                      updateColumn(colIndex, next);
+                    }}
+                    onMoveDown={() => {
+                      if (i === colBlocks.length - 1) return;
+                      const next = [...colBlocks];
+                      [next[i], next[i + 1]] = [next[i + 1], next[i]];
+                      updateColumn(colIndex, next);
+                    }}
+                    onDelete={() => updateColumn(colIndex, colBlocks.filter((b) => b.id !== nested.id))}
+                    canMoveUp={i > 0}
+                    canMoveDown={i < colBlocks.length - 1}
+                  />
+                ))}
+              </SortableContext>
 
-            {colBlocks.length === 0 && (
-              <p className="rounded-lg border border-dashed border-border p-3 text-center text-xs text-muted-foreground">
-                Üres oszlop
-              </p>
-            )}
+              {colBlocks.length === 0 && (
+                <p className="rounded-lg border border-dashed border-border p-3 text-center text-xs text-muted-foreground">
+                  Üres oszlop — húzz ide egy blokkot
+                </p>
+              )}
 
-            <div className="flex flex-wrap gap-1.5">
-              {NESTED_ADDABLE_TYPES.map(({ type, label }) => (
-                <button
-                  key={type}
-                  type="button"
-                  onClick={() => updateColumn(colIndex, [...colBlocks, createBlock(type)])}
-                  className="cursor-pointer rounded-full border border-border px-2.5 py-1 text-xs font-medium transition-colors hover:bg-muted"
-                >
-                  {label}
-                </button>
-              ))}
+              <ContainerEndDropZone id={columnEndDropId(block.id, colIndex)} active={dragState !== null} />
+
+              <div className="flex flex-wrap gap-1.5">
+                {NESTED_ADDABLE_TYPES.map(({ type, label }) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => updateColumn(colIndex, [...colBlocks, createBlock(type)])}
+                    className="cursor-pointer rounded-full border border-border px-2.5 py-1 text-xs font-medium transition-colors hover:bg-muted"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
             </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function GalleryBlockEditor({ block, onChange }: { block: GalleryBlock; onChange: (b: GalleryBlock) => void }) {
+  function updateImage(index: number, patch: Partial<GalleryBlock["content"]["images"][number]>) {
+    onChange({
+      ...block,
+      content: { images: block.content.images.map((img, i) => (i === index ? { ...img, ...patch } : img)) },
+    });
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-2">
+        <label htmlFor={`gallery-cols-${block.id}`} className="text-xs font-medium text-muted-foreground">
+          Oszlopok
+        </label>
+        <select
+          id={`gallery-cols-${block.id}`}
+          value={block.style.columns}
+          onChange={(e) =>
+            onChange({ ...block, style: { ...block.style, columns: Number(e.target.value) as 2 | 3 | 4 } })
+          }
+          className={`${FIELD_CLASS} sm:w-24`}
+        >
+          <option value={2}>2</option>
+          <option value={3}>3</option>
+          <option value={4}>4</option>
+        </select>
+      </div>
+
+      {block.content.images.map((img, i) => (
+        <div key={i} className="flex flex-col gap-2 rounded-lg border border-dashed border-border p-3 sm:flex-row sm:items-center">
+          <ImageUploadField blobKey={img.blobKey} onUploaded={(blobKey) => updateImage(i, { blobKey })} />
+          <input
+            value={img.alt}
+            onChange={(e) => updateImage(i, { alt: e.target.value })}
+            placeholder="Alt szöveg"
+            className={FIELD_CLASS}
+          />
+          <button
+            type="button"
+            onClick={() => onChange({ ...block, content: { images: block.content.images.filter((_, idx) => idx !== i) } })}
+            className="shrink-0 cursor-pointer rounded-lg border border-destructive/30 px-3 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/10"
+          >
+            Törlés
+          </button>
+        </div>
+      ))}
+
+      <button
+        type="button"
+        onClick={() => onChange({ ...block, content: { images: [...block.content.images, { blobKey: "", alt: "" }] } })}
+        className="cursor-pointer self-start rounded-full border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
+      >
+        + Kép hozzáadása
+      </button>
+    </div>
+  );
+}
+
+function CarouselBlockEditor({ block, onChange }: { block: CarouselBlock; onChange: (b: CarouselBlock) => void }) {
+  function updateSlide(index: number, patch: Partial<CarouselBlock["content"]["slides"][number]>) {
+    onChange({
+      ...block,
+      content: { slides: block.content.slides.map((s, i) => (i === index ? { ...s, ...patch } : s)) },
+    });
+  }
+
+  return (
+    <div className="flex flex-col gap-3">
+      {block.content.slides.map((slide, i) => (
+        <div key={i} className="flex flex-col gap-2 rounded-lg border border-dashed border-border p-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <ImageUploadField blobKey={slide.blobKey} onUploaded={(blobKey) => updateSlide(i, { blobKey })} />
+            <input
+              value={slide.alt}
+              onChange={(e) => updateSlide(i, { alt: e.target.value })}
+              placeholder="Alt szöveg"
+              className={FIELD_CLASS}
+            />
           </div>
-        ))}
+          <div className="flex gap-2">
+            <input
+              value={slide.caption ?? ""}
+              onChange={(e) => updateSlide(i, { caption: e.target.value })}
+              placeholder="Felirat (opcionális)"
+              className={FIELD_CLASS}
+            />
+            <button
+              type="button"
+              onClick={() => onChange({ ...block, content: { slides: block.content.slides.filter((_, idx) => idx !== i) } })}
+              className="shrink-0 cursor-pointer rounded-lg border border-destructive/30 px-3 py-1.5 text-xs font-medium text-destructive hover:bg-destructive/10"
+            >
+              Törlés
+            </button>
+          </div>
+        </div>
+      ))}
+
+      <button
+        type="button"
+        onClick={() =>
+          onChange({ ...block, content: { slides: [...block.content.slides, { blobKey: "", alt: "", caption: "" }] } })
+        }
+        className="cursor-pointer self-start rounded-full border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted"
+      >
+        + Dia hozzáadása
+      </button>
+    </div>
+  );
+}
+
+const CTA_TONE_OPTIONS: { value: CtaBlock["style"]["tone"]; label: string }[] = [
+  { value: "gold", label: "Arany" },
+  { value: "charcoal", label: "Faszén" },
+  { value: "tech-blue", label: "Tech-kék" },
+  { value: "cream", label: "Krém" },
+  { value: "ink", label: "Tinta" },
+];
+
+function CtaBlockEditor({ block, onChange }: { block: CtaBlock; onChange: (b: CtaBlock) => void }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <input
+        value={block.content.heading}
+        onChange={(e) => onChange({ ...block, content: { ...block.content, heading: e.target.value } })}
+        placeholder="Cím"
+        className={FIELD_CLASS}
+      />
+      <textarea
+        value={block.content.text}
+        onChange={(e) => onChange({ ...block, content: { ...block.content, text: e.target.value } })}
+        placeholder="Szöveg"
+        rows={2}
+        className={FIELD_CLASS}
+      />
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <input
+          value={block.content.buttonLabel}
+          onChange={(e) => onChange({ ...block, content: { ...block.content, buttonLabel: e.target.value } })}
+          placeholder="Gomb szövege"
+          className={FIELD_CLASS}
+        />
+        <input
+          value={block.content.buttonHref}
+          onChange={(e) => onChange({ ...block, content: { ...block.content, buttonHref: e.target.value } })}
+          placeholder="Link (URL)"
+          className={FIELD_CLASS}
+        />
+      </div>
+      <div className="flex items-center gap-2">
+        <label htmlFor={`cta-tone-${block.id}`} className="text-xs font-medium text-muted-foreground">
+          Szín
+        </label>
+        <select
+          id={`cta-tone-${block.id}`}
+          value={block.style.tone}
+          onChange={(e) => onChange({ ...block, style: { ...block.style, tone: e.target.value as CtaBlock["style"]["tone"] } })}
+          className={`${FIELD_CLASS} sm:w-40`}
+        >
+          {CTA_TONE_OPTIONS.map((t) => (
+            <option key={t.value} value={t.value}>
+              {t.label}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );
@@ -126,6 +314,9 @@ export const TYPE_LABELS: Record<Block["type"], string> = {
   button: "Gomb",
   spacer: "Térköz",
   columns: "Oszlopok",
+  gallery: "Galéria",
+  carousel: "Carousel",
+  cta: "Call-to-action",
 };
 
 interface Props {
@@ -293,6 +484,9 @@ export function BlockEditorCard({
         )}
 
         {block.type === "columns" && <ColumnsBlockEditor block={block} onChange={onChange} />}
+        {block.type === "gallery" && <GalleryBlockEditor block={block} onChange={onChange} />}
+        {block.type === "carousel" && <CarouselBlockEditor block={block} onChange={onChange} />}
+        {block.type === "cta" && <CtaBlockEditor block={block} onChange={onChange} />}
       </div>
     </div>
   );
