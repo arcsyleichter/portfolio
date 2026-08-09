@@ -1,0 +1,185 @@
+{
+  "meta": {
+    "title": "Áron Leichter — Web Development, AI Integration, SaaS",
+    "description": "Custom web applications, AI integration, and full SaaS product development for SMBs and growing companies."
+  },
+  "nav": {
+    "about": "About",
+    "services": "Services",
+    "projects": "Projects",
+    "process": "Process",
+    "tech": "Tech Stack",
+    "pricing": "Pricing",
+    "blog": "Blog",
+    "contact": "Contact",
+    "cta": "Get in touch"
+  },
+  "hero": {
+    "eyebrow": "Web Development · AI · SaaS",
+    "title1": "I build digital products",
+    "title2": "that actually work",
+    "subtitle": "I build custom web applications, AI-powered automation, and full SaaS products for small and mid-sized businesses — from planning to launch, and beyond.",
+    "ctaPrimary": "Let's talk about your project",
+    "ctaSecondary": "See my work",
+    "stats": [
+      { "value": "1", "label": "live system serving real, paying customers" },
+      { "value": "2", "label": "standalone services in one product family" },
+      { "value": "100%", "label": "custom-designed architecture" }
+    ]
+  },
+  "about": {
+    "eyebrow": "About",
+    "title": "A developer who sees the product through — not just the code",
+    "paragraphs": [
+      "I'm Áron, a web developer. I build systems that run in production and serve real businesses every day — not just demos.",
+      "My focus sits at the intersection of three areas: custom web applications, AI integration, and full SaaS products. I like projects that start from a real user need and land in a stable, maintainable system.",
+      "I enjoy working with SMBs and growing companies where technology genuinely matters to the business — not decoration, a tool."
+    ],
+    "highlights": [
+      "Multi-tenant architecture and data security",
+      "AI-powered automation for real business processes",
+      "Projects seen through: from planning to support"
+    ]
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "How I can help",
+    "subtitle": "No templates — a system built around your actual process.",
+    "items": [
+      {
+        "title": "Custom web applications",
+        "description": "Admin dashboards, internal systems, customer portals — built from the ground up around your business logic.",
+        "tags": ["Dashboard", "Multi-tenant", "Admin system"]
+      },
+      {
+        "title": "AI integration & automation",
+        "description": "AI-powered features and process automation added to your existing systems — where they actually save time and money.",
+        "tags": ["AI integration", "Automation", "Process optimization"]
+      },
+      {
+        "title": "Full product / SaaS development",
+        "description": "From idea to a live product serving paying customers — architecture, development, and operational support.",
+        "tags": ["SaaS", "Product development", "Scalability"]
+      }
+    ]
+  },
+  "projects": {
+    "eyebrow": "Projects",
+    "title": "What I've built so far",
+    "subtitle": "One live system serving real customers — plus a few concept demos showing what I'm capable of.",
+    "liveBadge": "Live project",
+    "demoBadge": "Concept / Demo",
+    "demoNote": "The demo projects are illustrative concepts, not real client work — built to showcase capability.",
+    "cta": "Details",
+    "items": [
+      {
+        "id": "lnyugta",
+        "kind": "live",
+        "title": "L-NYUGTA",
+        "summary": "A cash-register companion admin dashboard and wholesale ordering module — multi-tenant architecture, Hungarian NAV e-invoicing, real paying customers.",
+        "tags": ["Node.js", "Multi-tenant", "NAV e-invoicing", "SQLite"]
+      },
+      {
+        "id": "ai-support",
+        "kind": "demo",
+        "title": "AI customer support assistant",
+        "summary": "A concept for an AI chatbot embedded in a webshop: order-status lookups, FAQ answers, and handoff to a human agent when needed.",
+        "tags": ["AI integration", "Chatbot", "Automation"]
+      },
+      {
+        "id": "saas-inventory",
+        "kind": "demo",
+        "title": "Order & inventory management SaaS concept",
+        "summary": "A design for an order-management and inventory-tracking system for small businesses, with a real-time dashboard and reporting.",
+        "tags": ["SaaS", "Dashboard", "Real-time"]
+      },
+      {
+        "id": "auto-reporting",
+        "kind": "demo",
+        "title": "Automated reporting & invoicing tool",
+        "summary": "A concept for scheduled report generation, Excel export, and automatic email delivery — building on export experience gained from L-NYUGTA.",
+        "tags": ["Automation", "Excel export", "Scheduled jobs"]
+      }
+    ]
+  },
+  "process": {
+    "eyebrow": "Process",
+    "title": "How I work",
+    "steps": [
+      { "title": "Discovery", "description": "I get to know the business process and the real problem, not just the requested feature list." },
+      { "title": "Plan", "description": "A concrete, transparent plan: what we're building, in what order, and how long it will take." },
+      { "title": "Build", "description": "I work iteratively, with regular, testable checkpoints — no black box." },
+      { "title": "Test", "description": "Functional and near-production testing before anything reaches a real customer." },
+      { "title": "Launch", "description": "A controlled, reversible deploy process — no downtime, no data loss." },
+      { "title": "Support", "description": "I don't disappear after launch: maintenance, tuning, and further development." }
+    ]
+  },
+  "tech": {
+    "eyebrow": "Tech Stack",
+    "title": "Technologies I work with",
+    "categories": [
+      { "name": "Frontend", "items": ["React", "Next.js", "TypeScript", "Tailwind CSS"] },
+      { "name": "Backend", "items": ["Node.js", "REST APIs", "SQLite / SQL", "Server-side rendering"] },
+      { "name": "AI & automation", "items": ["AI integrations", "Process automation", "Scheduled jobs"] },
+      { "name": "Operations", "items": ["VPS deployment", "systemd", "Git / CI-like workflows"] }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "Testimonials",
+    "title": "Client feedback",
+    "comingSoon": "This section will grow with real client feedback soon."
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "Starting points",
+    "subtitle": "Every project is different — these are starting points; the final price is scoped together after a conversation.",
+    "customNote": "Content shown is indicative — final price and timeline depend on project scope.",
+    "cta": "Request a quote",
+    "tiers": [
+      {
+        "name": "Landing page",
+        "description": "A fast, professional online presence for small businesses.",
+        "features": ["Custom, responsive design", "Basic SEO setup", "Contact form", "1 language"],
+        "highlighted": false
+      },
+      {
+        "name": "Custom web application",
+        "description": "An admin system, dashboard, or customer portal built around your process.",
+        "features": ["Custom backend + database", "Role-based access", "Integrations with existing systems", "Production support"],
+        "highlighted": true
+      },
+      {
+        "name": "AI & SaaS partnership",
+        "description": "A longer-term collaboration on a product growing toward AI features or a SaaS direction.",
+        "features": ["AI integration from day one", "Scalable architecture", "Ongoing development", "Priority support"],
+        "highlighted": false
+      }
+    ]
+  },
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "Coming soon",
+    "body": "This is where I'll share technical notes, case studies, and development experience. No posts are published yet — check back soon.",
+    "backHome": "Back to home"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Let's talk about your project",
+    "subtitle": "Describe what you need in a few sentences — I'll reply within 1-2 business days.",
+    "formName": "Name",
+    "formEmail": "Email",
+    "formCompany": "Company (optional)",
+    "formMessage": "Message",
+    "formSubmit": "Send message",
+    "formSending": "Sending...",
+    "formSuccess": "Thanks for your message! I'll get back to you soon.",
+    "formError": "Something went wrong while sending — please try again, or email me directly.",
+    "directTitle": "Or reach out directly",
+    "emailLabel": "Email"
+  },
+  "footer": {
+    "tagline": "Web applications, AI integration, and SaaS products for SMBs.",
+    "rights": "All rights reserved.",
+    "madeWith": "Built with Next.js, Tailwind CSS, and Motion."
+  }
+}

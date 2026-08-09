@@ -1,0 +1,185 @@
+{
+  "meta": {
+    "title": "Áron Leichter — Webfejlesztés, AI-integráció, SaaS",
+    "description": "Egyedi webalkalmazások, AI-integráció és teljes SaaS-termékfejlesztés kkv-knak és növekvő cégeknek."
+  },
+  "nav": {
+    "about": "Rólam",
+    "services": "Szolgáltatások",
+    "projects": "Projektek",
+    "process": "Folyamat",
+    "tech": "Technológiák",
+    "pricing": "Árazás",
+    "blog": "Blog",
+    "contact": "Kapcsolat",
+    "cta": "Kapcsolatfelvétel"
+  },
+  "hero": {
+    "eyebrow": "Webfejlesztés · AI · SaaS",
+    "title1": "Digitális termékeket",
+    "title2": "építek, amik tényleg működnek",
+    "subtitle": "Egyedi webalkalmazásokat, AI-alapú automatizációt és teljes SaaS-termékeket fejlesztek kis- és középvállalkozásoknak — a tervezéstől az élesítésig, utána is.",
+    "ctaPrimary": "Beszéljünk a projektedről",
+    "ctaSecondary": "Nézd meg a munkáimat",
+    "stats": [
+      { "value": "1", "label": "élesben futó, fizető ügyfeleket kiszolgáló rendszer" },
+      { "value": "2", "label": "önálló szolgáltatás egy termékcsaládban" },
+      { "value": "100%", "label": "egyedi tervezésű architektúra" }
+    ]
+  },
+  "about": {
+    "eyebrow": "Rólam",
+    "title": "Fejlesztő, aki végigviszi a terméket — nem csak a kódot",
+    "paragraphs": [
+      "Áron vagyok, webfejlesztő. Olyan rendszereket építek, amik éles üzemben, valódi cégeket szolgálnak ki nap mint nap — nem csak demókat.",
+      "A fókuszom három terület metszéspontja: egyedi webalkalmazások, AI-integráció és teljes SaaS-termékek. Szeretem, ha egy projekt a felhasználói igényből indul, és egy stabil, karbantartható rendszerben landol.",
+      "Kkv-kkal és növekvő cégekkel dolgozom szívesen, ahol a technológia tényleg számít az üzletmenetben — nem díszlet, hanem eszköz."
+    ],
+    "highlights": [
+      "Multi-tenant architektúra és adatbiztonság",
+      "AI-alapú automatizáció valós üzleti folyamatokra",
+      "Végigvitt projektek: tervezéstől a support-ig"
+    ]
+  },
+  "services": {
+    "eyebrow": "Szolgáltatások",
+    "title": "Amiben segíthetek",
+    "subtitle": "Nem sablonokat gyártok — a te folyamatodra szabott rendszert.",
+    "items": [
+      {
+        "title": "Egyedi webalkalmazások",
+        "description": "Admin dashboardok, belső rendszerek, ügyfélportálok — a nulláról felépítve, a te üzleti logikádra szabva.",
+        "tags": ["Dashboard", "Multi-tenant", "Admin rendszer"]
+      },
+      {
+        "title": "AI-integráció, automatizáció",
+        "description": "AI-alapú funkciók és folyamat-automatizálás a meglévő rendszereidbe — ott, ahol tényleg időt és pénzt spórol.",
+        "tags": ["AI-integráció", "Automatizáció", "Folyamatoptimalizálás"]
+      },
+      {
+        "title": "Teljes termék / SaaS-fejlesztés",
+        "description": "Ötlettől a fizető ügyfeleket kiszolgáló, éles termékig — architektúra, fejlesztés, üzemeltetés-támogatás.",
+        "tags": ["SaaS", "Termékfejlesztés", "Skálázhatóság"]
+      }
+    ]
+  },
+  "projects": {
+    "eyebrow": "Projektek",
+    "title": "Amit eddig építettem",
+    "subtitle": "Egy éles, valódi ügyfeleket kiszolgáló rendszer — és néhány koncepció-demó, ami megmutatja, mire van kapacitásom.",
+    "liveBadge": "Éles projekt",
+    "demoBadge": "Koncepció / Demo",
+    "demoNote": "A demó projektek szemléltető koncepciók, nem valós ügyfélmunkák — a fejlesztői képességeim bemutatására készültek.",
+    "cta": "Részletek",
+    "items": [
+      {
+        "id": "lnyugta",
+        "kind": "live",
+        "title": "L-NYUGTA",
+        "summary": "Pénztárgép-kísérő admin dashboard és nagykereskedelmi rendelési modul — multi-tenant architektúrával, NAV e-számlázással, valós, fizető ügyfelekkel.",
+        "tags": ["Node.js", "Multi-tenant", "NAV e-számla", "SQLite"]
+      },
+      {
+        "id": "ai-support",
+        "kind": "demo",
+        "title": "AI ügyfélszolgálati asszisztens",
+        "summary": "Webshopba integrált AI-chatbot koncepció: rendelésstátusz-lekérdezés, gyakori kérdések megválaszolása, emberi kollégához továbbítás, ha kell.",
+        "tags": ["AI-integráció", "Chatbot", "Automatizáció"]
+      },
+      {
+        "id": "saas-inventory",
+        "kind": "demo",
+        "title": "Rendelés- és készletkezelő SaaS koncepció",
+        "summary": "Kisvállalkozásoknak szánt rendeléskezelő és készletnyilvántartó rendszer terve, valós idejű dashboarddal és riportokkal.",
+        "tags": ["SaaS", "Dashboard", "Real-time"]
+      },
+      {
+        "id": "auto-reporting",
+        "kind": "demo",
+        "title": "Automatizált riportoló és számlázó eszköz",
+        "summary": "Ütemezett riport-generálás, Excel-export és automatikus e-mail-küldés koncepciója — az L-NYUGTA-nál szerzett exportálási tapasztalatra építve.",
+        "tags": ["Automatizáció", "Excel-export", "Ütemezett feladatok"]
+      }
+    ]
+  },
+  "process": {
+    "eyebrow": "Munkafolyamat",
+    "title": "Hogyan dolgozom",
+    "steps": [
+      { "title": "Egyeztetés", "description": "Megismerem az üzleti folyamatot és a valódi problémát, nem csak a kért funkciólistát." },
+      { "title": "Terv", "description": "Konkrét, átlátható terv: mit építünk, milyen sorrendben, mennyi idő alatt." },
+      { "title": "Fejlesztés", "description": "Iteratívan haladok, rendszeres, tesztelhető köztes állapotokkal — nincs 'fekete doboz'." },
+      { "title": "Tesztelés", "description": "Funkcionális és éles-közeli tesztelés, mielőtt bármi valódi ügyfél elé kerül." },
+      { "title": "Élesítés", "description": "Kontrollált, visszaállítható deploy-folyamat — leállás és adatvesztés nélkül." },
+      { "title": "Support", "description": "Élesítés után sem tűnök el: karbantartás, finomhangolás, továbbfejlesztés." }
+    ]
+  },
+  "tech": {
+    "eyebrow": "Eszköztár",
+    "title": "Technológiák, amikkel dolgozom",
+    "categories": [
+      { "name": "Frontend", "items": ["React", "Next.js", "TypeScript", "Tailwind CSS"] },
+      { "name": "Backend", "items": ["Node.js", "REST API-k", "SQLite / SQL", "Szerver-oldali renderelés"] },
+      { "name": "AI & automatizáció", "items": ["AI-integrációk", "Folyamat-automatizálás", "Ütemezett feladatok"] },
+      { "name": "Üzemeltetés", "items": ["VPS-deploy", "systemd", "Git / CI-szerű folyamatok"] }
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "Vélemények",
+    "title": "Ügyfélvisszajelzések",
+    "comingSoon": "Hamarosan valós ügyfélvisszajelzésekkel bővül ez a szekció."
+  },
+  "pricing": {
+    "eyebrow": "Árazás",
+    "title": "Csomagok, amikből indulhatunk",
+    "subtitle": "Minden projekt más — ezek kiindulópontok, a pontos ár a scope alapján alakul ki egyeztetés után.",
+    "customNote": "A feltüntetett tartalom tájékoztató jellegű, a végleges ár és ütemezés projektfüggő.",
+    "cta": "Ajánlatot kérek",
+    "tiers": [
+      {
+        "name": "Bemutatkozó oldal",
+        "description": "Gyors, professzionális online jelenlét kisvállalkozásoknak.",
+        "features": ["Egyedi, reszponzív design", "Alap SEO-beállítás", "Kapcsolatfelvételi űrlap", "1 nyelv"],
+        "highlighted": false
+      },
+      {
+        "name": "Egyedi webalkalmazás",
+        "description": "Admin rendszer, dashboard vagy ügyfélportál a te folyamatodra szabva.",
+        "features": ["Egyedi backend + adatbázis", "Jogosultságkezelés", "Integrációk meglévő rendszerekkel", "Éles üzemeltetés-támogatás"],
+        "highlighted": true
+      },
+      {
+        "name": "AI & SaaS partnerség",
+        "description": "Hosszabb távú együttműködés egy AI-funkcióval bővülő vagy SaaS-irányba induló terméken.",
+        "features": ["AI-integráció tervezéstől", "Skálázható architektúra", "Folyamatos fejlesztés", "Kiemelt support"],
+        "highlighted": false
+      }
+    ]
+  },
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "Hamarosan",
+    "body": "Ezen a felületen fogok később szakmai jegyzeteket, esettanulmányokat és fejlesztői tapasztalatokat megosztani. Egyelőre nincs publikált cikk — nézz vissza hamarosan.",
+    "backHome": "Vissza a főoldalra"
+  },
+  "contact": {
+    "eyebrow": "Kapcsolat",
+    "title": "Beszéljünk a projektedről",
+    "subtitle": "Írd le pár mondatban, mire van szükséged — 1-2 munkanapon belül válaszolok.",
+    "formName": "Név",
+    "formEmail": "E-mail cím",
+    "formCompany": "Cég (opcionális)",
+    "formMessage": "Üzenet",
+    "formSubmit": "Üzenet küldése",
+    "formSending": "Küldés...",
+    "formSuccess": "Köszönöm az üzeneted! Hamarosan válaszolok.",
+    "formError": "Hiba történt a küldés közben — próbáld újra, vagy írj e-mailt közvetlenül.",
+    "directTitle": "Vagy közvetlenül",
+    "emailLabel": "E-mail"
+  },
+  "footer": {
+    "tagline": "Webalkalmazások, AI-integráció és SaaS-termékek kkv-knak.",
+    "rights": "Minden jog fenntartva.",
+    "madeWith": "Next.js, Tailwind CSS és Motion segítségével építve."
+  }
+}
