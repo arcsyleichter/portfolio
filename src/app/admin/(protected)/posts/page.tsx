@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { listAllPosts } from "@/lib/builder/store";
 import { LogoutButton } from "@/components/admin/logout-button";
+import { DeletePostButton } from "@/components/admin/delete-post-button";
 
 export default async function AdminPostsPage() {
   const posts = await listAllPosts();
@@ -30,27 +31,29 @@ export default async function AdminPostsPage() {
           </p>
         )}
         {posts.map((post) => (
-          <Link
+          <div
             key={`${post.locale}-${post.slug}`}
-            href={`/admin/posts/${post.locale}/${post.slug}/edit`}
             className="group flex items-center justify-between gap-4 rounded-2xl border border-border bg-card/60 p-5 shadow-md shadow-black/10 transition-all duration-300 hover:-translate-y-0.5 hover:border-gold/40 hover:shadow-lg hover:shadow-black/20"
           >
-            <div className="min-w-0">
+            <Link href={`/admin/posts/${post.locale}/${post.slug}/edit`} className="min-w-0 flex-1">
               <h2 className="truncate font-heading text-base font-semibold">{post.title || "(cím nélkül)"}</h2>
               <p className="mt-1 truncate text-sm text-muted-foreground">
                 {post.locale.toUpperCase()} · /{post.slug}
               </p>
+            </Link>
+            <div className="flex shrink-0 items-center gap-2">
+              <span
+                className={`rounded-full border px-2.5 py-1 text-xs font-medium ${
+                  post.status === "published"
+                    ? "border-tech-blue/30 text-tech-blue-light"
+                    : "border-border text-muted-foreground"
+                }`}
+              >
+                {post.status === "published" ? "Publikálva" : "Piszkozat"}
+              </span>
+              <DeletePostButton locale={post.locale} slug={post.slug} title={post.title} variant="icon" />
             </div>
-            <span
-              className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium ${
-                post.status === "published"
-                  ? "border-tech-blue/30 text-tech-blue-light"
-                  : "border-border text-muted-foreground"
-              }`}
-            >
-              {post.status === "published" ? "Publikálva" : "Piszkozat"}
-            </span>
-          </Link>
+          </div>
         ))}
       </div>
     </div>

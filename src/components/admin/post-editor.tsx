@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { BlogPostDocument, Block, BlockType } from "@/lib/builder/types";
 import { createBlock } from "@/lib/builder/defaults";
 import { BlockEditorCard } from "./block-editor-card";
+import { DeletePostButton } from "./delete-post-button";
 
 const ADDABLE_TYPES: { type: BlockType; label: string }[] = [
   { type: "heading", label: "+ Cím" },
@@ -48,10 +49,11 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
     patchDoc({ blocks: [...doc.blocks, createBlock(type)] });
   }
 
-  async function save(publish: boolean) {
+  async function save(nextStatus: BlogPostDocument["status"]) {
+    const wasPublished = doc.status === "published";
     setSaving(true);
     setError(null);
-    const payload: BlogPostDocument = { ...doc, status: publish ? "published" : doc.status };
+    const payload: BlogPostDocument = { ...doc, status: nextStatus };
 
     try {
       const res = await fetch(`/api/admin/posts/${doc.locale}/${doc.slug}`, {
@@ -67,7 +69,13 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
       const { post } = (await res.json()) as { post: BlogPostDocument };
       setDoc(post);
       setDirty(false);
-      setSavedMessage(publish ? "Publikálva." : "Mentve piszkozatként.");
+      setSavedMessage(
+        nextStatus === "published"
+          ? "Publikálva."
+          : wasPublished
+            ? "Visszavonva piszkozatba."
+            : "Mentve piszkozatként.",
+      );
     } catch {
       setError("Mentés sikertelen — hálózati hiba.");
     } finally {
@@ -92,22 +100,40 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
               Megtekintés élőben ↗
             </a>
           )}
+          {doc.status === "published" ? (
+            <button
+              type="button"
+              onClick={() => save("draft")}
+              disabled={saving}
+              className="cursor-pointer rounded-full border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {saving ? "Mentés..." : "Visszavonás piszkozatba"}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => save("draft")}
+              disabled={saving}
+              className="cursor-pointer rounded-full border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {saving ? "Mentés..." : "Mentés piszkozatként"}
+            </button>
+          )}
           <button
             type="button"
-            onClick={() => save(false)}
-            disabled={saving}
-            className="cursor-pointer rounded-full border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {saving ? "Mentés..." : "Mentés piszkozatként"}
-          </button>
-          <button
-            type="button"
-            onClick={() => save(true)}
+            onClick={() => save("published")}
             disabled={saving}
             className="cursor-pointer rounded-full bg-gradient-brand px-4 py-2 text-sm font-semibold text-ink shadow-lg shadow-gold/20 transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Publikálás
+            {doc.status === "published" ? "Frissítés" : "Publikálás"}
           </button>
+          <DeletePostButton
+            locale={doc.locale}
+            slug={doc.slug}
+            title={doc.title}
+            variant="icon"
+            redirectAfter="/admin/posts"
+          />
         </div>
       </div>
 
