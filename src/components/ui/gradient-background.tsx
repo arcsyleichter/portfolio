@@ -44,12 +44,16 @@ export function GradientBackground({
     .join(", ");
 
   return (
-    <div aria-hidden="true" className={className} style={{ overflow: "hidden" }}>
+    <div
+      aria-hidden="true"
+      className={className}
+      style={{ overflow: "hidden", contain: "paint" }}
+    >
       <div
         style={{
           position: "absolute",
-          inset: "-10%",
-          filter: "blur(40px)",
+          inset: "-4%",
+          filter: "blur(24px)",
           backgroundImage,
         }}
       />

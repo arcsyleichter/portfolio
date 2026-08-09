@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import { useReducedMotion } from "@/lib/use-reduced-motion";
+import { useVisibilityPause } from "@/lib/use-visibility-pause";
 import { cn } from "@/lib/utils";
 
 export interface InteractiveSynapseNetworkProps {
@@ -123,11 +124,15 @@ export function InteractiveSynapseNetwork({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduced = useReducedMotion();
+  // Only the section actually on-screen needs to run its rAF loop + mousemove
+  // listener — without this, every network on the page (Hero, Services,
+  // Contact) redraws every frame regardless of scroll position.
+  const active = useVisibilityPause(wrapperRef, { threshold: 0.05 });
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
     const canvas = canvasRef.current;
-    if (!wrapper || !canvas) return;
+    if (!wrapper || !canvas || !active) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -227,7 +232,7 @@ export function InteractiveSynapseNetwork({
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseleave", onMouseLeave);
     };
-  }, [nodeColor, pulseColor, connectionColor, backgroundColor, nodeCount, connectionRadius, trailOpacity, reduced]);
+  }, [nodeColor, pulseColor, connectionColor, backgroundColor, nodeCount, connectionRadius, trailOpacity, reduced, active]);
 
   const a11yProps = children
     ? { role: "img" as const, "aria-label": ariaLabel }
