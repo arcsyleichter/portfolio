@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Áron Leichter — Webfejlesztés, AI-integráció, SaaS",
-    "description": "Egyedi webalkalmazások, AI-integráció és teljes SaaS-termékfejlesztés kkv-knak és növekvő cégeknek."
+    "title": "Áron Leichter — Webfejlesztő: egyedi appok, AI-integráció, SaaS",
+    "description": "Webalkalmazást, AI-funkciót vagy SaaS-terméket építenél? Egyedi fejlesztés kkv-knak és növekvő cégeknek — tervezéstől az élesítésig, és utána is veled maradok."
   },
   "nav": {
     "about": "Rólam",
@@ -19,47 +19,47 @@
     "eyebrow": "Webfejlesztés · AI · SaaS",
     "title1": "Digitális termékeket",
     "title2": "építek, amik tényleg működnek",
-    "subtitle": "Egyedi webalkalmazásokat, AI-alapú automatizációt és teljes SaaS-termékeket fejlesztek kis- és középvállalkozásoknak — a tervezéstől az élesítésig, utána is.",
+    "subtitle": "Olyan webalkalmazásokat és AI-funkciókat építek, amik nem csak szépek, hanem tényleg pénzt termelnek és időt spórolnak — a tervezéstől az élesítésig, és utána is számíthatsz rám.",
     "ctaPrimary": "Beszéljünk a projektedről",
     "ctaSecondary": "Nézd meg a munkáimat",
     "stats": [
-      { "value": "1", "label": "élesben futó, fizető ügyfeleket kiszolgáló rendszer" },
+      { "value": "1", "label": "élesben futó rendszer, valódi fizető ügyfelekkel" },
       { "value": "2", "label": "önálló szolgáltatás egy termékcsaládban" },
-      { "value": "100%", "label": "egyedi tervezésű architektúra" }
+      { "value": "100%", "label": "egyedi tervezés, nulla sablon" }
     ]
   },
   "about": {
     "eyebrow": "Rólam",
     "title": "Fejlesztő, aki végigviszi a terméket — nem csak a kódot",
     "paragraphs": [
-      "Áron vagyok, webfejlesztő. Olyan rendszereket építek, amik éles üzemben, valódi cégeket szolgálnak ki nap mint nap — nem csak demókat.",
-      "A fókuszom három terület metszéspontja: egyedi webalkalmazások, AI-integráció és teljes SaaS-termékek. Szeretem, ha egy projekt a felhasználói igényből indul, és egy stabil, karbantartható rendszerben landol.",
+      "Áron vagyok, webfejlesztő. Nem demókat építek — hanem olyan rendszereket, amik élesben futnak, és valódi cégeket szolgálnak ki nap mint nap.",
+      "Három dolog érdekel igazán: egyedi webalkalmazások, AI-integráció és teljes SaaS-termékek építése. A legjobb projektek ott kezdődnek, hogy megértem, mire van szüksége a felhasználónak — onnan jutunk el egy stabil, hosszú távon is karbantartható rendszerig.",
       "Kkv-kkal és növekvő cégekkel dolgozom szívesen, ahol a technológia tényleg számít az üzletmenetben — nem díszlet, hanem eszköz."
     ],
     "highlights": [
-      "Multi-tenant architektúra és adatbiztonság",
-      "AI-alapú automatizáció valós üzleti folyamatokra",
-      "Végigvitt projektek: tervezéstől a support-ig"
+      "Olyan rendszerek, amik több ügyfelet is biztonságosan kiszolgálnak",
+      "AI, ami tényleg leveszi a munkát a válladról — nem csak dísz",
+      "Végigviszem a projektet: tervezéstől a support-ig, és utána sem tűnök el"
     ]
   },
   "services": {
     "eyebrow": "Szolgáltatások",
     "title": "Amiben segíthetek",
-    "subtitle": "Nem sablonokat gyártok — a te folyamatodra szabott rendszert.",
+    "subtitle": "Nem polcról vett sablon — a te folyamatodra szabott rendszer.",
     "items": [
       {
         "title": "Egyedi webalkalmazások",
-        "description": "Admin dashboardok, belső rendszerek, ügyfélportálok — a nulláról felépítve, a te üzleti logikádra szabva.",
+        "description": "Admin dashboardok, belső rendszerek, ügyfélportálok — a nulláról felépítve, pontosan a te üzleti logikádra szabva, nem egy sablon köré gyömöszölve.",
         "tags": ["Dashboard", "Multi-tenant", "Admin rendszer"]
       },
       {
         "title": "AI-integráció, automatizáció",
-        "description": "AI-alapú funkciók és folyamat-automatizálás a meglévő rendszereidbe — ott, ahol tényleg időt és pénzt spórol.",
+        "description": "Beépítek AI-funkciókat, és automatizálom azokat a folyamatokat, amik most még kézzel, feleslegesen esznek meg időt és pénzt.",
         "tags": ["AI-integráció", "Automatizáció", "Folyamatoptimalizálás"]
       },
       {
         "title": "Teljes termék / SaaS-fejlesztés",
-        "description": "Ötlettől a fizető ügyfeleket kiszolgáló, éles termékig — architektúra, fejlesztés, üzemeltetés-támogatás.",
+        "description": "Ötlettől a fizető ügyfelekig — végigviszlek a tervezésen, a fejlesztésen, és ott vagyok azután is, hogy élesbe ment a termék.",
         "tags": ["SaaS", "Termékfejlesztés", "Skálázhatóság"]
       }
     ]
@@ -67,38 +67,38 @@
   "projects": {
     "eyebrow": "Projektek",
     "title": "Amit eddig építettem",
-    "subtitle": "Egy éles, valódi ügyfeleket kiszolgáló rendszer — és néhány koncepció-demó, ami megmutatja, mire van kapacitásom.",
+    "subtitle": "Egy éles rendszer, ami valódi cégeket szolgál ki nap mint nap — plusz pár koncepció-demó, hogy lásd, milyen irányba tudnálak elvinni.",
     "liveBadge": "Éles projekt",
     "demoBadge": "Koncepció / Demo",
-    "demoNote": "A demó projektek szemléltető koncepciók, nem valós ügyfélmunkák — a fejlesztői képességeim bemutatására készültek.",
+    "demoNote": "A demó projektek nem éles ügyfélmunkák — azért készültek, hogy megmutassák, mit tudok, mielőtt a te projekteden dolgoznánk együtt.",
     "cta": "Részletek",
     "items": [
       {
         "id": "lnyugta",
         "kind": "live",
         "title": "L-NYUGTA",
-        "summary": "Pénztárgép-kísérő admin dashboard és nagykereskedelmi rendelési modul — multi-tenant architektúrával, NAV e-számlázással, valós, fizető ügyfelekkel.",
+        "summary": "Pénztárgép-kísérő admin dashboard és nagykereskedelmi rendelőrendszer — több cég adatait is biztonságosan kezeli, NAV-kompatibilis e-számlázással, és ma is éles ügyfeleket szolgál ki.",
         "tags": ["Node.js", "Multi-tenant", "NAV e-számla", "SQLite"]
       },
       {
         "id": "ai-support",
         "kind": "demo",
         "title": "AI ügyfélszolgálati asszisztens",
-        "summary": "Webshopba integrált AI-chatbot koncepció: rendelésstátusz-lekérdezés, gyakori kérdések megválaszolása, emberi kollégához továbbítás, ha kell.",
+        "summary": "AI-chatbot koncepció webshopokhoz: megválaszolja a gyakori kérdéseket, lekérdezi a rendelés státuszát, és időben átadja a beszélgetést egy embernek, ha arra van szükség.",
         "tags": ["AI-integráció", "Chatbot", "Automatizáció"]
       },
       {
         "id": "saas-inventory",
         "kind": "demo",
         "title": "Rendelés- és készletkezelő SaaS koncepció",
-        "summary": "Kisvállalkozásoknak szánt rendeléskezelő és készletnyilvántartó rendszer terve, valós idejű dashboarddal és riportokkal.",
+        "summary": "Rendeléskezelő és készletnyilvántartó rendszer terve kisvállalkozásoknak — valós idejű áttekintéssel arról, mi fogy, mi áll, és mennyi pénz van éppen a polcokon.",
         "tags": ["SaaS", "Dashboard", "Real-time"]
       },
       {
         "id": "auto-reporting",
         "kind": "demo",
         "title": "Automatizált riportoló és számlázó eszköz",
-        "summary": "Ütemezett riport-generálás, Excel-export és automatikus e-mail-küldés koncepciója — az L-NYUGTA-nál szerzett exportálási tapasztalatra építve.",
+        "summary": "Koncepció, ami levágja a hónap végi manuális Excel-gyúrást: ütemezett riportok, automatikus export, és a jelentés magától landol a megfelelő postafiókban — az L-NYUGTA-nál szerzett tapasztalatra építve.",
         "tags": ["Automatizáció", "Excel-export", "Ütemezett feladatok"]
       }
     ]
@@ -106,7 +106,7 @@
   "styleShowcase": {
     "eyebrow": "Stílusok",
     "title": "Nem egyetlen sablon — a te márkádhoz illő nyelvezet",
-    "subtitle": "Ugyanaz a termék teljesen más vizuális nyelven is felépíthető. Görgesd végig, melyik szólal meg a te célközönségednek.",
+    "subtitle": "Ugyanaz a termék tíz különböző köntösben — görgesd végig, és nézd meg, melyik szólal meg a te közönségednek.",
     "styles": [
       { "id": "minimal", "name": "Minimalista", "audience": "Prémium, komoly célközönségnek" },
       { "id": "maximal", "name": "Maximalista", "audience": "Fiatal, figyelemért versengő közönségnek" },
@@ -124,11 +124,11 @@
     "eyebrow": "Munkafolyamat",
     "title": "Hogyan dolgozom",
     "steps": [
-      { "title": "Egyeztetés", "description": "Megismerem az üzleti folyamatot és a valódi problémát, nem csak a kért funkciólistát." },
+      { "title": "Egyeztetés", "description": "Megismerem az üzleted, nem csak a kívánságlistát — mert a jó megoldás sokszor máshol van, mint amit elsőre kérnél." },
       { "title": "Terv", "description": "Konkrét, átlátható terv: mit építünk, milyen sorrendben, mennyi idő alatt." },
-      { "title": "Fejlesztés", "description": "Iteratívan haladok, rendszeres, tesztelhető köztes állapotokkal — nincs 'fekete doboz'." },
-      { "title": "Tesztelés", "description": "Funkcionális és éles-közeli tesztelés, mielőtt bármi valódi ügyfél elé kerül." },
-      { "title": "Élesítés", "description": "Kontrollált, visszaállítható deploy-folyamat — leállás és adatvesztés nélkül." },
+      { "title": "Fejlesztés", "description": "Lépésről lépésre haladok, rendszeresen mutatok kipróbálható köztes verziókat — nálam nincs \"majd a végén meglátod\"." },
+      { "title": "Tesztelés", "description": "Alaposan leteszteljük, éles körülmények között, mielőtt bármi a te ügyfeleid elé kerülne." },
+      { "title": "Élesítés", "description": "Az élesítés kontrollált és visszafordítható — nincs leállás, nincs elveszett adat, nincs szívfájdalom." },
       { "title": "Support", "description": "Élesítés után sem tűnök el: karbantartás, finomhangolás, továbbfejlesztés." }
     ]
   },
@@ -150,13 +150,13 @@
   "pricing": {
     "eyebrow": "Árazás",
     "title": "Csomagok, amikből indulhatunk",
-    "subtitle": "Minden projekt más — ezek kiindulópontok, a pontos ár a scope alapján alakul ki egyeztetés után.",
-    "customNote": "A feltüntetett tartalom tájékoztató jellegű, a végleges ár és ütemezés projektfüggő.",
+    "subtitle": "Minden projekt más — ezek csak kiindulópontok, a pontos árat a feladat mérete és mélysége határozza meg, közös egyeztetés után.",
+    "customNote": "A fenti tartalom tájékoztató jellegű — a pontos ár és határidő mindig az adott projekttől függ.",
     "cta": "Ajánlatot kérek",
     "tiers": [
       {
         "name": "Bemutatkozó oldal",
-        "description": "Gyors, professzionális online jelenlét kisvállalkozásoknak.",
+        "description": "Gyors, ütős online megjelenés kisvállalkozásoknak, ami tényleg hoz ügyfeleket.",
         "features": ["Egyedi, reszponzív design", "Alap SEO-beállítás", "Kapcsolatfelvételi űrlap", "1 nyelv"],
         "highlighted": false
       },
@@ -168,7 +168,7 @@
       },
       {
         "name": "AI & SaaS partnerség",
-        "description": "Hosszabb távú együttműködés egy AI-funkcióval bővülő vagy SaaS-irányba induló terméken.",
+        "description": "Hosszú távú partnerség, ha AI-funkciókkal bővítenéd a termékedet, vagy SaaS-irányba indulnátok el.",
         "features": ["AI-integráció tervezéstől", "Skálázható architektúra", "Folyamatos fejlesztés", "Kiemelt support"],
         "highlighted": false
       }
@@ -196,7 +196,7 @@
     "emailLabel": "E-mail"
   },
   "footer": {
-    "tagline": "Webalkalmazások, AI-integráció és SaaS-termékek kkv-knak.",
+    "tagline": "Webes rendszerek, amik tényleg dolgoznak helyetted — kkv-knak és növekvő csapatoknak.",
     "rights": "Minden jog fenntartva.",
     "madeWith": "Next.js, Tailwind CSS és Motion segítségével építve."
   }

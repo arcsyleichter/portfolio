@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Áron Leichter — Web Development, AI Integration, SaaS",
-    "description": "Custom web applications, AI integration, and full SaaS product development for SMBs and growing companies."
+    "title": "Áron Leichter — Web Developer: custom apps, AI integration, SaaS",
+    "description": "Need a web app, an AI feature, or a full SaaS product? Custom development for SMBs and growing companies — from planning to launch, and I stick around after."
   },
   "nav": {
     "about": "About",
@@ -19,47 +19,47 @@
     "eyebrow": "Web Development · AI · SaaS",
     "title1": "I build digital products",
     "title2": "that actually work",
-    "subtitle": "I build custom web applications, AI-powered automation, and full SaaS products for small and mid-sized businesses — from planning to launch, and beyond.",
+    "subtitle": "I build web apps and AI features that aren't just good-looking — they actually make money and save time. From planning to launch, and I'm still around after.",
     "ctaPrimary": "Let's talk about your project",
     "ctaSecondary": "See my work",
     "stats": [
-      { "value": "1", "label": "live system serving real, paying customers" },
+      { "value": "1", "label": "live system, serving real paying customers" },
       { "value": "2", "label": "standalone services in one product family" },
-      { "value": "100%", "label": "custom-designed architecture" }
+      { "value": "100%", "label": "custom-built, zero templates" }
     ]
   },
   "about": {
     "eyebrow": "About",
     "title": "A developer who sees the product through — not just the code",
     "paragraphs": [
-      "I'm Áron, a web developer. I build systems that run in production and serve real businesses every day — not just demos.",
-      "My focus sits at the intersection of three areas: custom web applications, AI integration, and full SaaS products. I like projects that start from a real user need and land in a stable, maintainable system.",
-      "I enjoy working with SMBs and growing companies where technology genuinely matters to the business — not decoration, a tool."
+      "I'm Áron, a web developer. I don't build demos — I build systems that run in production and serve real businesses every single day.",
+      "Three things genuinely interest me: custom web applications, AI integration, and full SaaS products. The best projects start with understanding what the user actually needs — and end in a stable system that's still easy to maintain years later.",
+      "I enjoy working with SMBs and growing companies where technology genuinely matters to the business — not decoration, but a tool."
     ],
     "highlights": [
-      "Multi-tenant architecture and data security",
-      "AI-powered automation for real business processes",
-      "Projects seen through: from planning to support"
+      "Systems that keep multiple clients' data safely separated",
+      "AI that actually takes work off your plate — not just for show",
+      "I see projects through: planning to support, and I don't vanish after launch"
     ]
   },
   "services": {
     "eyebrow": "Services",
     "title": "How I can help",
-    "subtitle": "No templates — a system built around your actual process.",
+    "subtitle": "Not a template off the shelf — a system built around how you actually work.",
     "items": [
       {
         "title": "Custom web applications",
-        "description": "Admin dashboards, internal systems, customer portals — built from the ground up around your business logic.",
+        "description": "Admin dashboards, internal systems, customer portals — built from scratch around your business logic, not squeezed into someone else's template.",
         "tags": ["Dashboard", "Multi-tenant", "Admin system"]
       },
       {
         "title": "AI integration & automation",
-        "description": "AI-powered features and process automation added to your existing systems — where they actually save time and money.",
+        "description": "I add AI features and automate the processes that are still eating up time and money by hand.",
         "tags": ["AI integration", "Automation", "Process optimization"]
       },
       {
         "title": "Full product / SaaS development",
-        "description": "From idea to a live product serving paying customers — architecture, development, and operational support.",
+        "description": "From idea to paying customers — I take you through planning, development, and I'm still there after it goes live.",
         "tags": ["SaaS", "Product development", "Scalability"]
       }
     ]
@@ -67,38 +67,38 @@
   "projects": {
     "eyebrow": "Projects",
     "title": "What I've built so far",
-    "subtitle": "One live system serving real customers — plus a few concept demos showing what I'm capable of.",
+    "subtitle": "One live system serving real companies every day — plus a few concept demos, so you can see where I could take you.",
     "liveBadge": "Live project",
     "demoBadge": "Concept / Demo",
-    "demoNote": "The demo projects are illustrative concepts, not real client work — built to showcase capability.",
+    "demoNote": "The demo projects aren't real client work — they exist to show what I can do, before we start working on yours.",
     "cta": "Details",
     "items": [
       {
         "id": "lnyugta",
         "kind": "live",
         "title": "L-NYUGTA",
-        "summary": "A cash-register companion admin dashboard and wholesale ordering module — multi-tenant architecture, Hungarian NAV e-invoicing, real paying customers.",
+        "summary": "A cash-register companion admin dashboard and wholesale ordering system — keeps multiple companies' data safely separated, handles Hungarian NAV e-invoicing, and still serves real paying customers today.",
         "tags": ["Node.js", "Multi-tenant", "NAV e-invoicing", "SQLite"]
       },
       {
         "id": "ai-support",
         "kind": "demo",
         "title": "AI customer support assistant",
-        "summary": "A concept for an AI chatbot embedded in a webshop: order-status lookups, FAQ answers, and handoff to a human agent when needed.",
+        "summary": "An AI chatbot concept for webshops: answers common questions, looks up order status, and hands off to a human at the right moment when it's needed.",
         "tags": ["AI integration", "Chatbot", "Automation"]
       },
       {
         "id": "saas-inventory",
         "kind": "demo",
         "title": "Order & inventory management SaaS concept",
-        "summary": "A design for an order-management and inventory-tracking system for small businesses, with a real-time dashboard and reporting.",
+        "summary": "An order-management and inventory system designed for small businesses — a real-time picture of what's selling, what's in stock, and what's sitting on the shelves.",
         "tags": ["SaaS", "Dashboard", "Real-time"]
       },
       {
         "id": "auto-reporting",
         "kind": "demo",
         "title": "Automated reporting & invoicing tool",
-        "summary": "A concept for scheduled report generation, Excel export, and automatic email delivery — building on export experience gained from L-NYUGTA.",
+        "summary": "A concept that kills the end-of-month manual spreadsheet grind: scheduled reports, automatic exports, and the report lands in the right inbox on its own — built on export experience from L-NYUGTA.",
         "tags": ["Automation", "Excel export", "Scheduled jobs"]
       }
     ]
@@ -106,7 +106,7 @@
   "styleShowcase": {
     "eyebrow": "Styles",
     "title": "Not one template — the language that fits your brand",
-    "subtitle": "The same product can be built in completely different visual languages. Scroll through and see which one speaks to your audience.",
+    "subtitle": "The same product, in ten completely different outfits — scroll through and see which one speaks to your audience.",
     "styles": [
       { "id": "minimal", "name": "Minimalist", "audience": "For a premium, mature audience" },
       { "id": "maximal", "name": "Maximalist", "audience": "For a young audience competing for attention" },
@@ -124,11 +124,11 @@
     "eyebrow": "Process",
     "title": "How I work",
     "steps": [
-      { "title": "Discovery", "description": "I get to know the business process and the real problem, not just the requested feature list." },
+      { "title": "Discovery", "description": "I get to know your business, not just your wishlist — because the right solution is often not the one you'd ask for first." },
       { "title": "Plan", "description": "A concrete, transparent plan: what we're building, in what order, and how long it will take." },
-      { "title": "Build", "description": "I work iteratively, with regular, testable checkpoints — no black box." },
-      { "title": "Test", "description": "Functional and near-production testing before anything reaches a real customer." },
-      { "title": "Launch", "description": "A controlled, reversible deploy process — no downtime, no data loss." },
+      { "title": "Build", "description": "I work step by step, showing testable versions along the way — with me, there's no 'you'll see it at the end.'" },
+      { "title": "Test", "description": "We test it thoroughly, under real-world conditions, before anything reaches your customers." },
+      { "title": "Launch", "description": "Launch is controlled and reversible — no downtime, no lost data, no heart attacks." },
       { "title": "Support", "description": "I don't disappear after launch: maintenance, tuning, and further development." }
     ]
   },
@@ -150,13 +150,13 @@
   "pricing": {
     "eyebrow": "Pricing",
     "title": "Starting points",
-    "subtitle": "Every project is different — these are starting points; the final price is scoped together after a conversation.",
-    "customNote": "Content shown is indicative — final price and timeline depend on project scope.",
+    "subtitle": "Every project's different — these are starting points. The real price depends on the size and depth of the work, set together after we talk.",
+    "customNote": "The content above is for reference — the final price and timeline always depend on the specific project.",
     "cta": "Request a quote",
     "tiers": [
       {
         "name": "Landing page",
-        "description": "A fast, professional online presence for small businesses.",
+        "description": "A fast, sharp online presence for small businesses — built to actually bring in customers.",
         "features": ["Custom, responsive design", "Basic SEO setup", "Contact form", "1 language"],
         "highlighted": false
       },
@@ -168,7 +168,7 @@
       },
       {
         "name": "AI & SaaS partnership",
-        "description": "A longer-term collaboration on a product growing toward AI features or a SaaS direction.",
+        "description": "A long-term partnership if you're adding AI features to your product, or heading in a SaaS direction.",
         "features": ["AI integration from day one", "Scalable architecture", "Ongoing development", "Priority support"],
         "highlighted": false
       }
@@ -196,7 +196,7 @@
     "emailLabel": "Email"
   },
   "footer": {
-    "tagline": "Web applications, AI integration, and SaaS products for SMBs.",
+    "tagline": "Web systems that actually work for you — for SMBs and growing teams.",
     "rights": "All rights reserved.",
     "madeWith": "Built with Next.js, Tailwind CSS, and Motion."
   }
