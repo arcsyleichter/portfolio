@@ -178,7 +178,9 @@
     "eyebrow": "Blog",
     "title": "Hamarosan",
     "body": "Ezen a felületen fogok később szakmai jegyzeteket, esettanulmányokat és fejlesztői tapasztalatokat megosztani. Egyelőre nincs publikált cikk — nézz vissza hamarosan.",
-    "backHome": "Vissza a főoldalra"
+    "backHome": "Vissza a főoldalra",
+    "listTitle": "Cikkek",
+    "readMore": "Tovább olvasom"
   },
   "contact": {
     "eyebrow": "Kapcsolat",

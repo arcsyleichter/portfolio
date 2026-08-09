@@ -178,7 +178,9 @@
     "eyebrow": "Blog",
     "title": "Coming soon",
     "body": "This is where I'll share technical notes, case studies, and development experience. No posts are published yet — check back soon.",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "listTitle": "Articles",
+    "readMore": "Read more"
   },
   "contact": {
     "eyebrow": "Contact",
