@@ -7,6 +7,7 @@
     "about": "About",
     "services": "Services",
     "projects": "Projects",
+    "styles": "Styles",
     "process": "Process",
     "tech": "Tech Stack",
     "pricing": "Pricing",
@@ -100,6 +101,23 @@
         "summary": "A concept for scheduled report generation, Excel export, and automatic email delivery — building on export experience gained from L-NYUGTA.",
         "tags": ["Automation", "Excel export", "Scheduled jobs"]
       }
+    ]
+  },
+  "styleShowcase": {
+    "eyebrow": "Styles",
+    "title": "Not one template — the language that fits your brand",
+    "subtitle": "The same product can be built in completely different visual languages. Scroll through and see which one speaks to your audience.",
+    "styles": [
+      { "id": "minimal", "name": "Minimalist", "audience": "For a premium, mature audience" },
+      { "id": "maximal", "name": "Maximalist", "audience": "For a young audience competing for attention" },
+      { "id": "brutalist", "name": "Brutalist", "audience": "For a creative, industry-expert audience" },
+      { "id": "cyberpunk", "name": "Cyberpunk", "audience": "For tech-loving young adults" },
+      { "id": "industrial", "name": "Industrial", "audience": "For B2B, manufacturing and engineering audiences" },
+      { "id": "glass", "name": "Glassmorphism", "audience": "For SaaS and app products, any age group" },
+      { "id": "vaporwave", "name": "Retro / Vaporwave", "audience": "For a nostalgic, creative audience" },
+      { "id": "organic", "name": "Organic", "audience": "For wellness, food, sustainability" },
+      { "id": "luxury", "name": "Luxury editorial", "audience": "For a premium, mature audience" },
+      { "id": "playful", "name": "Playful", "audience": "For kid- and family-friendly products" }
     ]
   },
   "process": {

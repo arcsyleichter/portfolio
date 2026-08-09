@@ -15,6 +15,7 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     { href: `/${locale}#about`, label: dict.nav.about },
     { href: `/${locale}#services`, label: dict.nav.services },
     { href: `/${locale}#projects`, label: dict.nav.projects },
+    { href: `/${locale}#style-showcase`, label: dict.nav.styles },
     { href: `/${locale}#process`, label: dict.nav.process },
     { href: `/${locale}#tech`, label: dict.nav.tech },
     { href: `/${locale}#pricing`, label: dict.nav.pricing },

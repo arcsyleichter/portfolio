@@ -9,7 +9,7 @@ export function Process({ dict }: { dict: Dictionary }) {
   return (
     <section
       id="process"
-      className="section-dark relative isolate bg-background px-4 py-20 text-foreground sm:px-6 lg:py-28"
+      className="section-dark relative isolate border-t border-border/60 bg-background px-4 py-20 text-foreground sm:px-6 lg:py-28"
     >
       <GradientBackground tone="dark" className="absolute inset-0 -z-10" />
       <div className="mx-auto max-w-3xl">

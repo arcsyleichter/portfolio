@@ -5,6 +5,7 @@ import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Services } from "@/components/sections/services";
 import { Projects } from "@/components/sections/projects";
+import { StyleShowcase } from "@/components/sections/style-showcase";
 import { Process } from "@/components/sections/process";
 import { TechStack } from "@/components/sections/tech-stack";
 import { Testimonials } from "@/components/sections/testimonials";
@@ -28,6 +29,7 @@ export default async function HomePage({
       <About dict={dict} />
       <Services dict={dict} />
       <Projects dict={dict} />
+      <StyleShowcase dict={dict} />
       <Process dict={dict} />
       <TechStack dict={dict} />
       <Testimonials dict={dict} />

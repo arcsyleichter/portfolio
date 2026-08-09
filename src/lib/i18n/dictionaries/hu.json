@@ -7,6 +7,7 @@
     "about": "Rólam",
     "services": "Szolgáltatások",
     "projects": "Projektek",
+    "styles": "Stílusok",
     "process": "Folyamat",
     "tech": "Technológiák",
     "pricing": "Árazás",
@@ -100,6 +101,23 @@
         "summary": "Ütemezett riport-generálás, Excel-export és automatikus e-mail-küldés koncepciója — az L-NYUGTA-nál szerzett exportálási tapasztalatra építve.",
         "tags": ["Automatizáció", "Excel-export", "Ütemezett feladatok"]
       }
+    ]
+  },
+  "styleShowcase": {
+    "eyebrow": "Stílusok",
+    "title": "Nem egyetlen sablon — a te márkádhoz illő nyelvezet",
+    "subtitle": "Ugyanaz a termék teljesen más vizuális nyelven is felépíthető. Görgesd végig, melyik szólal meg a te célközönségednek.",
+    "styles": [
+      { "id": "minimal", "name": "Minimalista", "audience": "Prémium, komoly célközönségnek" },
+      { "id": "maximal", "name": "Maximalista", "audience": "Fiatal, figyelemért versengő közönségnek" },
+      { "id": "brutalist", "name": "Brutalista", "audience": "Kreatív, iparági szakértő közönségnek" },
+      { "id": "cyberpunk", "name": "Cyberpunk", "audience": "Tech-rajongó, fiatal felnőtt közönségnek" },
+      { "id": "industrial", "name": "Ipari", "audience": "B2B, gyártás- és mérnök-közeli közönségnek" },
+      { "id": "glass", "name": "Üveghatás", "audience": "SaaS és app-termékekhez, minden korosztálynak" },
+      { "id": "vaporwave", "name": "Retro / Vaporwave", "audience": "Nosztalgikus, kreatív közönségnek" },
+      { "id": "organic", "name": "Natúr", "audience": "Wellness, élelmiszer, fenntarthatóság" },
+      { "id": "luxury", "name": "Luxus szerkesztőségi", "audience": "Prémium, érett közönségnek" },
+      { "id": "playful", "name": "Játékos", "audience": "Gyerek- és családbarát termékekhez" }
     ]
   },
   "process": {
