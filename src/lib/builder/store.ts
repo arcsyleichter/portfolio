@@ -16,12 +16,17 @@ function isNetlifyProductionRuntime(): boolean {
   return Boolean(process.env.NETLIFY) && process.env.NETLIFY_DEV !== "true";
 }
 
+// Netlify Blobs defaults to "eventual" consistency (fast, edge-cached reads
+// that can lag behind a write by seconds) — wrong for an editor, where
+// saving a post and immediately being redirected to view/edit it must see
+// that exact write. "strong" trades a bit of read latency for read-after-
+// write correctness, which is what every call here actually needs.
 function postsStore() {
-  return getStore(isNetlifyProductionRuntime() ? "blog-posts" : "blog-posts-dev");
+  return getStore({ name: isNetlifyProductionRuntime() ? "blog-posts" : "blog-posts-dev", consistency: "strong" });
 }
 
 function imagesStore() {
-  return getStore(isNetlifyProductionRuntime() ? "blog-images" : "blog-images-dev");
+  return getStore({ name: isNetlifyProductionRuntime() ? "blog-images" : "blog-images-dev", consistency: "strong" });
 }
 
 function postKey(locale: Locale, slug: string): string {
