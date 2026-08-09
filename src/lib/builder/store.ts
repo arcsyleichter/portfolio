@@ -1,37 +1,7 @@
 import "server-only";
-import { getStore } from "@netlify/blobs";
 import type { Locale } from "@/lib/i18n/config";
 import type { BlogPostDocument, PostSummary } from "./types";
-
-/**
- * True only for a real deployed Netlify runtime (production or a deploy
- * preview) — deliberately NOT true under `netlify dev`, which also sets
- * NETLIFY but additionally sets NETLIFY_DEV. Only the store NAME depends on
- * this — auth is always zero-config (see below), so local testing (via
- * `netlify dev`, the only supported local workflow — plain `next dev` can't
- * reach Blobs at all) never touches production content, without ever
- * needing a raw auth token in `.env.local`.
- */
-function isNetlifyProductionRuntime(): boolean {
-  return Boolean(process.env.NETLIFY) && process.env.NETLIFY_DEV !== "true";
-}
-
-// Netlify Blobs defaults to "eventual" consistency (fast, edge-cached reads
-// that can lag behind a write by seconds) — wrong for an editor, where
-// saving a post and immediately being redirected to view/edit it must see
-// that exact write. "strong" trades a bit of read latency for read-after-
-// write correctness, which is what every call here actually needs.
-function postsStore() {
-  return getStore({ name: isNetlifyProductionRuntime() ? "blog-posts" : "blog-posts-dev", consistency: "strong" });
-}
-
-function imagesStore() {
-  return getStore({ name: isNetlifyProductionRuntime() ? "blog-images" : "blog-images-dev", consistency: "strong" });
-}
-
-function postKey(locale: Locale, slug: string): string {
-  return `posts/${locale}/${slug}.json`;
-}
+import { getPool, ensureSchema, POSTS_TABLE, IMAGES_TABLE } from "./db";
 
 function toSummary(doc: BlogPostDocument): PostSummary {
   return {
@@ -47,42 +17,45 @@ function toSummary(doc: BlogPostDocument): PostSummary {
 }
 
 export async function getPost(locale: Locale, slug: string): Promise<BlogPostDocument | null> {
-  const doc = await postsStore().get(postKey(locale, slug), { type: "json" });
-  return (doc as BlogPostDocument | null) ?? null;
+  await ensureSchema();
+  const { rows } = await getPool().query(`SELECT doc FROM ${POSTS_TABLE} WHERE locale = $1 AND slug = $2`, [
+    locale,
+    slug,
+  ]);
+  return (rows[0]?.doc as BlogPostDocument | undefined) ?? null;
 }
 
 export async function savePost(doc: BlogPostDocument): Promise<void> {
-  await postsStore().setJSON(postKey(doc.locale, doc.slug), doc);
+  await ensureSchema();
+  await getPool().query(
+    `INSERT INTO ${POSTS_TABLE} (locale, slug, doc, status, updated_at, published_at)
+     VALUES ($1, $2, $3, $4, $5, $6)
+     ON CONFLICT (locale, slug)
+     DO UPDATE SET doc = $3, status = $4, updated_at = $5, published_at = $6`,
+    [doc.locale, doc.slug, JSON.stringify(doc), doc.status, doc.updatedAt, doc.publishedAt ?? null],
+  );
 }
 
 export async function deletePost(locale: Locale, slug: string): Promise<void> {
-  await postsStore().delete(postKey(locale, slug));
+  await ensureSchema();
+  await getPool().query(`DELETE FROM ${POSTS_TABLE} WHERE locale = $1 AND slug = $2`, [locale, slug]);
 }
 
 /** Admin-only: every post, every locale, every status. */
 export async function listAllPosts(): Promise<PostSummary[]> {
-  const store = postsStore();
-  const { blobs } = await store.list({ prefix: "posts/" });
-  const docs = await Promise.all(
-    blobs.map((b) => store.get(b.key, { type: "json" }) as Promise<BlogPostDocument | null>),
-  );
-  return docs
-    .filter((d): d is BlogPostDocument => d !== null)
-    .map(toSummary)
-    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+  await ensureSchema();
+  const { rows } = await getPool().query(`SELECT doc FROM ${POSTS_TABLE} ORDER BY updated_at DESC`);
+  return rows.map((r) => toSummary(r.doc as BlogPostDocument));
 }
 
 /** Public: only published posts for the given locale, newest first. */
 export async function listPublishedPosts(locale: Locale): Promise<PostSummary[]> {
-  const store = postsStore();
-  const { blobs } = await store.list({ prefix: `posts/${locale}/` });
-  const docs = await Promise.all(
-    blobs.map((b) => store.get(b.key, { type: "json" }) as Promise<BlogPostDocument | null>),
+  await ensureSchema();
+  const { rows } = await getPool().query(
+    `SELECT doc FROM ${POSTS_TABLE} WHERE locale = $1 AND status = 'published' ORDER BY published_at DESC NULLS LAST`,
+    [locale],
   );
-  return docs
-    .filter((d): d is BlogPostDocument => d !== null && d.status === "published")
-    .map(toSummary)
-    .sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""));
+  return rows.map((r) => toSummary(r.doc as BlogPostDocument));
 }
 
 function sanitizeFilename(name: string): string {
@@ -90,21 +63,30 @@ function sanitizeFilename(name: string): string {
 }
 
 export async function saveImage(bytes: ArrayBuffer, contentType: string, filename: string): Promise<string> {
-  // No "images/" prefix needed — this is a dedicated images-only store, not
-  // shared namespace with posts, so the key IS the whole identifier.
+  await ensureSchema();
   const key = `${crypto.randomUUID()}-${sanitizeFilename(filename)}`;
-  await imagesStore().set(key, bytes, { metadata: { contentType } });
+  await getPool().query(`INSERT INTO ${IMAGES_TABLE} (key, data, content_type) VALUES ($1, $2, $3)`, [
+    key,
+    Buffer.from(bytes),
+    contentType,
+  ]);
   return key;
 }
 
 export async function getImage(key: string): Promise<{ data: ArrayBuffer; contentType: string } | null> {
-  const result = await imagesStore().getWithMetadata(key, { type: "arrayBuffer" });
-  if (!result) return null;
-  const contentType =
-    typeof result.metadata?.contentType === "string" ? result.metadata.contentType : "application/octet-stream";
-  return { data: result.data as ArrayBuffer, contentType };
+  await ensureSchema();
+  const { rows } = await getPool().query(`SELECT data, content_type FROM ${IMAGES_TABLE} WHERE key = $1`, [key]);
+  const row = rows[0] as { data: Buffer; content_type: string } | undefined;
+  if (!row) return null;
+  const { data: buf } = row;
+  return {
+    // Node's pg driver always backs this with a real ArrayBuffer, never SharedArrayBuffer.
+    data: buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer,
+    contentType: row.content_type,
+  };
 }
 
 export async function deleteImage(key: string): Promise<void> {
-  await imagesStore().delete(key);
+  await ensureSchema();
+  await getPool().query(`DELETE FROM ${IMAGES_TABLE} WHERE key = $1`, [key]);
 }
