@@ -38,7 +38,7 @@ export function Services({ dict }: { dict: Dictionary }) {
             return (
               <Reveal key={item.title} delay={i * 0.1}>
                 <div
-                  className={`group h-full rounded-2xl border border-border bg-card/60 p-6 shadow-md shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/20 ${
+                  className={`group flex h-full flex-col rounded-2xl border border-border bg-card/60 p-6 shadow-md shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/20 ${
                     isAi ? "hover:border-tech-blue/50" : "hover:border-gold/50"
                   }`}
                 >
@@ -52,7 +52,7 @@ export function Services({ dict }: { dict: Dictionary }) {
                     <Icon className="h-6 w-6 text-ink" />
                   </div>
                   <h3 className="mt-5 font-heading text-lg font-semibold">{item.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+                  <p className="mt-2 flex-1 text-sm text-muted-foreground">{item.description}</p>
                   <div className="mt-5 flex flex-wrap gap-2">
                     {item.tags.map((tag) => (
                       <span

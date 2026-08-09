@@ -37,7 +37,7 @@ export function Projects({ dict }: { dict: Dictionary }) {
             return (
               <Reveal key={item.id} delay={i * 0.08}>
                 <div
-                  className={`group h-full overflow-hidden rounded-2xl border border-border bg-card/60 shadow-md shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/20 ${
+                  className={`group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/60 shadow-md shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/20 ${
                     isAi ? "hover:border-tech-blue/50" : "hover:border-gold/50"
                   }`}
                 >
@@ -51,9 +51,9 @@ export function Projects({ dict }: { dict: Dictionary }) {
                       {isLive ? p.liveBadge : p.demoBadge}
                     </span>
                   </div>
-                  <div className="p-6">
+                  <div className="flex flex-1 flex-col p-6">
                     <h3 className="font-heading text-lg font-semibold">{item.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground">{item.summary}</p>
+                    <p className="mt-2 flex-1 text-sm text-muted-foreground">{item.summary}</p>
                     <div className="mt-5 flex flex-wrap gap-2">
                       {item.tags.map((tag) => (
                         <span
