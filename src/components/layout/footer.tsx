@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { GradientBackground } from "@/components/ui/gradient-background";
+import { Logo } from "@/components/ui/logo";
 
 export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
@@ -9,11 +10,8 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       <GradientBackground tone="dark" className="absolute inset-0 -z-10" />
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
         <div>
-          <Link
-            href={`/${locale}`}
-            className="font-heading text-lg font-bold tracking-tight text-gradient-brand"
-          >
-            Árcsy
+          <Link href={`/${locale}`} aria-label="Arcsy Design Studio">
+            <Logo />
           </Link>
           <p className="mt-2 max-w-sm text-sm text-muted-foreground">{dict.footer.tagline}</p>
         </div>

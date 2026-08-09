@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { LanguageSwitcher } from "./language-switcher";
+import { Logo } from "@/components/ui/logo";
 
 export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const [open, setOpen] = useState(false);
@@ -23,11 +24,8 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
     <header className="section-light sticky top-0 z-50 border-b border-border/60 bg-background/85 text-foreground backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link
-          href={`/${locale}`}
-          className="font-heading text-lg font-bold tracking-tight text-gradient-brand"
-        >
-          Árcsy
+        <Link href={`/${locale}`} aria-label="Arcsy Design Studio">
+          <Logo />
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex">

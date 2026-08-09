@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="arcsy-mark-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d9a521" />
+      <stop offset="100%" stop-color="#b8860b" />
+    </linearGradient>
+    <linearGradient id="arcsy-mark-link" x1="55" y1="64" x2="66" y2="82" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#8c6a0a" />
+      <stop offset="100%" stop-color="#19a6cd" />
+    </linearGradient>
+  </defs>
+  <path d="M60 16 L14 104 L40 104 Z" fill="url(#arcsy-mark-gold)" />
+  <path d="M60 16 L106 104 L80 104 Z" fill="url(#arcsy-mark-gold)" />
+  <line x1="55" y1="64" x2="66" y2="82" stroke="url(#arcsy-mark-link)" stroke-width="2.5" stroke-linecap="round" />
+  <circle cx="55" cy="64" r="5" fill="#faf8f5" stroke="#8c6a0a" stroke-width="1.75" />
+  <circle cx="66" cy="82" r="5.5" fill="#4fc3e0" stroke="#19a6cd" stroke-width="1.75" />
+</svg>
