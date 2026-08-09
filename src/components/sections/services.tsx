@@ -51,9 +51,9 @@ export function Services({ dict }: { dict: Dictionary }) {
                   >
                     <Icon className="h-6 w-6 text-ink" />
                   </div>
-                  <h3 className="mt-5 font-heading text-lg font-semibold">{item.title}</h3>
+                  <h3 className="mt-5 min-h-14 font-heading text-lg font-semibold">{item.title}</h3>
                   <p className="mt-2 flex-1 text-sm text-muted-foreground">{item.description}</p>
-                  <div className="mt-5 flex flex-wrap gap-2">
+                  <div className="mt-5 flex min-h-[3.75rem] flex-wrap items-start gap-2">
                     {item.tags.map((tag) => (
                       <span
                         key={tag}

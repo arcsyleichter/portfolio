@@ -52,9 +52,9 @@ export function Projects({ dict }: { dict: Dictionary }) {
                     </span>
                   </div>
                   <div className="flex flex-1 flex-col p-6">
-                    <h3 className="font-heading text-lg font-semibold">{item.title}</h3>
+                    <h3 className="min-h-14 font-heading text-lg font-semibold">{item.title}</h3>
                     <p className="mt-2 flex-1 text-sm text-muted-foreground">{item.summary}</p>
-                    <div className="mt-5 flex flex-wrap gap-2">
+                    <div className="mt-5 flex min-h-[3.75rem] flex-wrap items-start gap-2">
                       {item.tags.map((tag) => (
                         <span
                           key={tag}

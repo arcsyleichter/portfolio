@@ -99,7 +99,7 @@
         "kind": "demo",
         "title": "Automatizált riportoló és számlázó eszköz",
         "summary": "Koncepció, ami levágja a hónap végi manuális Excel-gyúrást: ütemezett riportok, automatikus export, és a jelentés magától landol a megfelelő postafiókban — az L-NYUGTA-nál szerzett tapasztalatra építve.",
-        "tags": ["Automatizáció", "Excel-export", "Ütemezett feladatok"]
+        "tags": ["Automatizáció", "Excel-export", "Ütemezés"]
       }
     ]
   },
