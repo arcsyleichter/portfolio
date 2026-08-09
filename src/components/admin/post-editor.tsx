@@ -22,6 +22,7 @@ import { TYPE_LABELS } from "./block-editor-card";
 import { SortableBlockCard } from "./sortable-block-card";
 import { PaletteItem } from "./palette-item";
 import { DeletePostButton } from "./delete-post-button";
+import { TemplatePicker } from "./template-picker";
 
 const ADDABLE_TYPES: { type: BlockType; label: string }[] = [
   { type: "heading", label: "+ Cím" },
@@ -29,6 +30,7 @@ const ADDABLE_TYPES: { type: BlockType; label: string }[] = [
   { type: "image", label: "+ Kép" },
   { type: "button", label: "+ Gomb" },
   { type: "spacer", label: "+ Térköz" },
+  { type: "columns", label: "+ Oszlopok" },
 ];
 
 type DragState = { type: "block"; blockId: string } | { type: "palette"; blockType: BlockType } | null;
@@ -285,11 +287,7 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
               />
             ))}
           </SortableContext>
-          {doc.blocks.length === 0 && (
-            <p className="rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-              Még nincs egy blokk sem — adj hozzá egyet lentről, vagy húzd ide.
-            </p>
-          )}
+          {doc.blocks.length === 0 && <TemplatePicker onSelect={(blocks) => patchDoc({ blocks })} />}
           <CanvasEndDropZone active={dragState?.type === "palette"} />
         </div>
 
