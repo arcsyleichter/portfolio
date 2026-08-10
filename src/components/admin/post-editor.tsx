@@ -30,6 +30,7 @@ import { SortableBlockCard } from "./sortable-block-card";
 import { PaletteItem } from "./palette-item";
 import { DeletePostButton } from "./delete-post-button";
 import { TemplatePicker } from "./template-picker";
+import { SeoPanel } from "./seo-panel";
 import { ContainerEndDropZone } from "./container-end-drop-zone";
 import { BuilderDndUiProvider, type BuilderDragState } from "./builder-dnd-ui-context";
 
@@ -263,6 +264,7 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
         <p className="text-xs text-muted-foreground">
           {doc.locale.toUpperCase()} · /{doc.slug} · {doc.status === "published" ? "Publikálva" : "Piszkozat"}
         </p>
+        <SeoPanel seo={doc.seo} onChange={(seo) => patchDoc({ seo })} />
       </div>
 
       <DndContext
