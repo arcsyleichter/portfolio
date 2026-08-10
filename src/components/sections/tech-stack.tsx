@@ -3,8 +3,8 @@ import { Reveal } from "@/components/motion/reveal";
 import { GradientBackground } from "@/components/ui/gradient-background";
 import { SectionHeader } from "./section-header";
 
-export function TechStack({ dict }: { dict: Dictionary }) {
-  const t = dict.tech;
+export function TechStack({ dict, override }: { dict: Dictionary; override?: Dictionary["tech"] }) {
+  const t = override ?? dict.tech;
 
   return (
     <section

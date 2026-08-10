@@ -3,8 +3,8 @@ import { Reveal } from "@/components/motion/reveal";
 import { GradientBackground } from "@/components/ui/gradient-background";
 import { SectionHeader } from "./section-header";
 
-export function Process({ dict }: { dict: Dictionary }) {
-  const pr = dict.process;
+export function Process({ dict, override }: { dict: Dictionary; override?: Dictionary["process"] }) {
+  const pr = override ?? dict.process;
 
   return (
     <section

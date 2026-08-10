@@ -3,8 +3,8 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { Reveal } from "@/components/motion/reveal";
 import { GradientBackground } from "@/components/ui/gradient-background";
 
-export function Testimonials({ dict }: { dict: Dictionary }) {
-  const t = dict.testimonials;
+export function Testimonials({ dict, override }: { dict: Dictionary; override?: Dictionary["testimonials"] }) {
+  const t = override ?? dict.testimonials;
 
   return (
     <section className="section-dark relative isolate bg-background px-4 py-20 text-foreground sm:px-6 lg:py-24">
