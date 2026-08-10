@@ -40,7 +40,7 @@ export default async function HomePage({
       <About dict={dict} override={overrides.about as Dictionary["about"] | undefined} />
       <Services dict={dict} override={overrides.services as Dictionary["services"] | undefined} />
       <Projects dict={dict} override={overrides.projects as Dictionary["projects"] | undefined} />
-      <StyleShowcase dict={dict} />
+      <StyleShowcase dict={dict} override={overrides.styleShowcase as Dictionary["styleShowcase"] | undefined} />
       <Process dict={dict} override={overrides.process as Dictionary["process"] | undefined} />
       <TechStack dict={dict} override={overrides.tech as Dictionary["tech"] | undefined} />
       <Testimonials dict={dict} override={overrides.testimonials as Dictionary["testimonials"] | undefined} />

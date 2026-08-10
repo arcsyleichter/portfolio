@@ -14,8 +14,8 @@ import {
 import { STYLE_MOCKUPS, type StyleId } from "@/components/ui/style-hero-mockups";
 import { SectionHeader } from "./section-header";
 
-export function StyleShowcase({ dict }: { dict: Dictionary }) {
-  const s = dict.styleShowcase;
+export function StyleShowcase({ dict, override }: { dict: Dictionary; override?: Dictionary["styleShowcase"] }) {
+  const s = override ?? dict.styleShowcase;
 
   return (
     <section
