@@ -5,6 +5,7 @@ import { MotionConfig } from "motion/react";
 import "../globals.css";
 import { locales, isLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { getCachedPageLayout } from "@/lib/builder/page-layout";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
@@ -52,6 +53,10 @@ export default async function LocaleLayout({
   if (!isLocale(locale)) notFound();
 
   const dict = getDictionary(locale);
+  const layout = await getCachedPageLayout(locale);
+  const visibleSectionKeys = layout
+    .filter((item): item is Extract<typeof item, { kind: "section" }> => item.kind === "section" && !item.hidden)
+    .map((item) => item.sectionKey);
 
   return (
     <html
@@ -61,7 +66,7 @@ export default async function LocaleLayout({
       <body className="min-h-full flex flex-col">
         <MotionConfig reducedMotion="user">
           <SmoothScroll>
-            <Navbar locale={locale} dict={dict} />
+            <Navbar locale={locale} dict={dict} visibleSectionKeys={visibleSectionKeys} />
             <main className="flex-1">{children}</main>
             <Footer locale={locale} dict={dict} />
           </SmoothScroll>

@@ -57,3 +57,19 @@ export const SECTION_COMPONENTS: Record<SectionKey, (props: SectionRenderProps) 
     <Contact dict={dict} override={overrides.contact as Dictionary["contact"] | undefined} />
   ),
 };
+
+/**
+ * Which built-in sections have a navbar anchor link, and under which anchor
+ * id / dict.nav label key. Hero and Testimonials intentionally have no entry
+ * (they never had a nav link) — Contact also has no entry here because it
+ * gets its own dedicated CTA button in the navbar, not a plain anchor link.
+ */
+export const SECTION_NAV_META: Partial<Record<SectionKey, { anchor: string; labelKey: keyof Dictionary["nav"] }>> = {
+  about: { anchor: "about", labelKey: "about" },
+  services: { anchor: "services", labelKey: "services" },
+  projects: { anchor: "projects", labelKey: "projects" },
+  styleShowcase: { anchor: "style-showcase", labelKey: "styles" },
+  process: { anchor: "process", labelKey: "process" },
+  tech: { anchor: "tech", labelKey: "tech" },
+  pricing: { anchor: "pricing", labelKey: "pricing" },
+};

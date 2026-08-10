@@ -4,22 +4,29 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { SectionKey } from "@/lib/builder/site-content-schema";
+import { SECTION_NAV_META } from "@/components/sections/section-registry";
 import { LanguageSwitcher } from "./language-switcher";
 import { HomeLink } from "./home-link";
 
-export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export function Navbar({
+  locale,
+  dict,
+  visibleSectionKeys,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+  visibleSectionKeys: SectionKey[];
+}) {
   const [open, setOpen] = useState(false);
 
-  const anchorItems: { href: string; label: string }[] = [
-    { href: `/${locale}#about`, label: dict.nav.about },
-    { href: `/${locale}#services`, label: dict.nav.services },
-    { href: `/${locale}#projects`, label: dict.nav.projects },
-    { href: `/${locale}#style-showcase`, label: dict.nav.styles },
-    { href: `/${locale}#process`, label: dict.nav.process },
-    { href: `/${locale}#tech`, label: dict.nav.tech },
-    { href: `/${locale}#pricing`, label: dict.nav.pricing },
-    { href: `/${locale}/blog`, label: dict.nav.blog },
-  ];
+  const anchorItems: { href: string; label: string }[] = visibleSectionKeys
+    .map((key) => SECTION_NAV_META[key])
+    .filter((meta) => meta !== undefined)
+    .map((meta) => ({ href: `/${locale}#${meta.anchor}`, label: dict.nav[meta.labelKey] }));
+  anchorItems.push({ href: `/${locale}/blog`, label: dict.nav.blog });
+
+  const contactVisible = visibleSectionKeys.includes("contact");
 
   return (
     <header className="section-light sticky top-0 z-50 border-b border-border/60 bg-background/85 text-foreground backdrop-blur-md">
@@ -40,12 +47,14 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 
         <div className="hidden items-center gap-3 lg:flex">
           <LanguageSwitcher locale={locale} />
-          <a
-            href={`/${locale}#contact`}
-            className="cursor-pointer rounded-full bg-gradient-brand px-4 py-2 text-sm font-semibold text-ink shadow-lg shadow-gold/20 transition-transform hover:scale-105"
-          >
-            {dict.nav.cta}
-          </a>
+          {contactVisible && (
+            <a
+              href={`/${locale}#contact`}
+              className="cursor-pointer rounded-full bg-gradient-brand px-4 py-2 text-sm font-semibold text-ink shadow-lg shadow-gold/20 transition-transform hover:scale-105"
+            >
+              {dict.nav.cta}
+            </a>
+          )}
         </div>
 
         <button
@@ -89,13 +98,15 @@ export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                   {item.label}
                 </a>
               ))}
-              <a
-                href={`/${locale}#contact`}
-                onClick={() => setOpen(false)}
-                className="mt-2 rounded-full bg-gradient-brand px-4 py-2 text-center text-sm font-semibold text-ink"
-              >
-                {dict.nav.cta}
-              </a>
+              {contactVisible && (
+                <a
+                  href={`/${locale}#contact`}
+                  onClick={() => setOpen(false)}
+                  className="mt-2 rounded-full bg-gradient-brand px-4 py-2 text-center text-sm font-semibold text-ink"
+                >
+                  {dict.nav.cta}
+                </a>
+              )}
               <div className="mt-3">
                 <LanguageSwitcher locale={locale} />
               </div>
