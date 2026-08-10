@@ -158,6 +158,33 @@ export const blogPostDocumentSchema = z.object({
   blocks: z.array(blockSchema),
 });
 
+// Slugs that must never be assignable to a custom page — "blog" is a
+// literal, static route segment under [locale]/, so a page saved with this
+// slug would be permanently unreachable (the static route always wins).
+export const RESERVED_PAGE_SLUGS = ["blog"] as const;
+
+export const customPageDocumentSchema = z.object({
+  slug: z
+    .string()
+    .min(1)
+    .max(120)
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "csak kisbetű, szám és kötőjel")
+    .refine((s) => !(RESERVED_PAGE_SLUGS as readonly string[]).includes(s), "ez a slug foglalt"),
+  locale: z.enum(locales),
+  title: z.string().min(1).max(200),
+  status: z.enum(["draft", "published"]),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  publishedAt: z.string().optional(),
+  seo: z
+    .object({
+      metaTitle: z.string().max(200).optional(),
+      metaDescription: z.string().max(300).optional(),
+    })
+    .optional(),
+  blocks: z.array(blockSchema),
+});
+
 // --- Homepage section content ---------------------------------------------
 //
 // Each schema mirrors one root key of the i18n dictionaries exactly (see

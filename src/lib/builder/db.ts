@@ -37,6 +37,7 @@ export const POSTS_TABLE = `posts${TABLE_SUFFIX}`;
 export const IMAGES_TABLE = `images${TABLE_SUFFIX}`;
 export const SITE_SECTIONS_TABLE = `site_sections${TABLE_SUFFIX}`;
 export const PAGE_LAYOUT_TABLE = `page_layout${TABLE_SUFFIX}`;
+export const CUSTOM_PAGES_TABLE = `custom_pages${TABLE_SUFFIX}`;
 
 let schemaReady: Promise<void> | null = null;
 
@@ -71,6 +72,15 @@ export function ensureSchema(): Promise<void> {
           locale TEXT PRIMARY KEY,
           items JSONB NOT NULL,
           updated_at TEXT NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS ${CUSTOM_PAGES_TABLE} (
+          locale TEXT NOT NULL,
+          slug TEXT NOT NULL,
+          doc JSONB NOT NULL,
+          status TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          published_at TEXT,
+          PRIMARY KEY (locale, slug)
         );
         `,
       )

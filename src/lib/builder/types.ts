@@ -127,3 +127,29 @@ export interface PostSummary {
   updatedAt: string;
   publishedAt?: string;
 }
+
+/**
+ * An admin-created standalone page at a custom URL slug (e.g. /hu/arak) —
+ * unlike a blog post it has no excerpt/cover (no public "card" listing) and
+ * unlike a homepage section it has no bespoke component, just free blocks.
+ */
+export interface CustomPageDocument {
+  slug: string;
+  locale: Locale;
+  title: string;
+  status: "draft" | "published";
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+  seo?: { metaTitle?: string; metaDescription?: string };
+  blocks: Block[];
+}
+
+export interface CustomPageSummary {
+  slug: string;
+  locale: Locale;
+  title: string;
+  status: "draft" | "published";
+  updatedAt: string;
+  publishedAt?: string;
+}
