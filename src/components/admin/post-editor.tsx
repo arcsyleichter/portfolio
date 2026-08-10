@@ -20,13 +20,16 @@ import { createBlock } from "@/lib/builder/defaults";
 import {
   ROOT_CONTAINER,
   findBlock,
+  findContainerOf,
+  getContainerBlocks,
+  setContainerBlocks,
   insertBlockInTree,
   moveBlockInTree,
   resolveDropTarget,
   type ContainerId,
 } from "@/lib/builder/block-tree";
-import { TYPE_LABELS } from "./block-editor-card";
-import { SortableBlockCard } from "./sortable-block-card";
+import { TYPE_LABELS, BlockEditorCard } from "./block-editor-card";
+import { CanvasBlock } from "./canvas-block";
 import { PaletteItem } from "./palette-item";
 import { DeletePostButton } from "./delete-post-button";
 import { TemplatePicker } from "./template-picker";
@@ -58,6 +61,7 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
   const [dragState, setDragState] = useState<BuilderDragState>(null);
   const [overInfo, setOverInfo] = useState<{ containerId: ContainerId; index: number } | null>(null);
   const [mode, setMode] = useState<"edit" | "preview">("edit");
+  const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -75,27 +79,47 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
     setSavedMessage(null);
   }
 
-  function updateBlock(id: string, next: Block) {
-    patchDoc((d) => ({ blocks: d.blocks.map((b) => (b.id === id ? next : b)) }));
-  }
-
-  function moveBlock(id: string, dir: -1 | 1) {
+  // Container-generic — works for a block at the root or nested inside any
+  // column, so the same handlers serve both the canvas and the inspector
+  // regardless of where the selected block actually lives.
+  function updateBlockById(id: string, next: Block) {
     patchDoc((d) => {
-      const index = d.blocks.findIndex((b) => b.id === id);
-      const swapWith = index + dir;
-      if (index < 0 || swapWith < 0 || swapWith >= d.blocks.length) return {};
-      const next = [...d.blocks];
-      [next[index], next[swapWith]] = [next[swapWith], next[index]];
-      return { blocks: next };
+      const containerId = findContainerOf(d.blocks, id);
+      if (!containerId) return {};
+      const container = getContainerBlocks(d.blocks, containerId).map((b) => (b.id === id ? next : b));
+      return { blocks: setContainerBlocks(d.blocks, containerId, container) };
     });
   }
 
-  function deleteBlock(id: string) {
-    patchDoc((d) => ({ blocks: d.blocks.filter((b) => b.id !== id) }));
+  function moveBlockById(id: string, dir: -1 | 1) {
+    patchDoc((d) => {
+      const containerId = findContainerOf(d.blocks, id);
+      if (!containerId) return {};
+      const container = getContainerBlocks(d.blocks, containerId);
+      const index = container.findIndex((b) => b.id === id);
+      const swapWith = index + dir;
+      if (index < 0 || swapWith < 0 || swapWith >= container.length) return {};
+      return { blocks: moveBlockInTree(d.blocks, id, containerId, containerId, swapWith) };
+    });
   }
 
-  function addBlock(type: BlockType) {
-    patchDoc((d) => ({ blocks: [...d.blocks, createBlock(type)] }));
+  function deleteBlockById(id: string) {
+    patchDoc((d) => {
+      const containerId = findContainerOf(d.blocks, id);
+      if (!containerId) return {};
+      const next = getContainerBlocks(d.blocks, containerId).filter((b) => b.id !== id);
+      return { blocks: setContainerBlocks(d.blocks, containerId, next) };
+    });
+    setSelectedBlockId((cur) => (cur === id ? null : cur));
+  }
+
+  function addBlockToContainer(containerId: ContainerId, type: BlockType) {
+    const newBlock = createBlock(type);
+    patchDoc((d) => {
+      const container = getContainerBlocks(d.blocks, containerId);
+      return { blocks: insertBlockInTree(d.blocks, containerId, container.length, newBlock) };
+    });
+    setSelectedBlockId(newBlock.id);
   }
 
   function handleDragStart(event: DragStartEvent) {
@@ -131,6 +155,7 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
       if (activeData.blockType === "columns" && resolved.containerId !== ROOT_CONTAINER) return;
       const newBlock = createBlock(activeData.blockType);
       patchDoc((d) => ({ blocks: insertBlockInTree(d.blocks, resolved.containerId, resolved.index, newBlock) }));
+      setSelectedBlockId(newBlock.id);
       return;
     }
 
@@ -178,8 +203,13 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
     }
   }
 
+  const selectedBlock = selectedBlockId ? findBlock(doc.blocks, selectedBlockId) : null;
+  const selectedContainerId = selectedBlockId ? findContainerOf(doc.blocks, selectedBlockId) : null;
+  const selectedContainerBlocks = selectedContainerId ? getContainerBlocks(doc.blocks, selectedContainerId) : [];
+  const selectedIndex = selectedBlockId ? selectedContainerBlocks.findIndex((b) => b.id === selectedBlockId) : -1;
+
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Link href="/admin/posts" className="text-sm text-muted-foreground hover:text-foreground">
           ← Vissza a listához
@@ -239,40 +269,42 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
       )}
       {savedMessage && !dirty && <p className="mt-4 text-sm text-tech-blue-light">{savedMessage}</p>}
 
-      <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-border bg-card/60 p-5 shadow-md shadow-black/10">
-        <div>
-          <label htmlFor="title" className="text-sm font-medium">
-            Cím
-          </label>
-          <input
-            id="title"
-            value={doc.title}
-            onChange={(e) => patchDoc({ title: e.target.value })}
-            className="mt-1.5 w-full rounded-lg border border-border bg-background/40 px-3.5 py-2.5 text-sm outline-none focus:border-gold"
-          />
+      <div className="mx-auto mt-6 max-w-3xl rounded-2xl border border-border bg-card/60 p-5 shadow-md shadow-black/10">
+        <div className="flex flex-col gap-4">
+          <div>
+            <label htmlFor="title" className="text-sm font-medium">
+              Cím
+            </label>
+            <input
+              id="title"
+              value={doc.title}
+              onChange={(e) => patchDoc({ title: e.target.value })}
+              className="mt-1.5 w-full rounded-lg border border-border bg-background/40 px-3.5 py-2.5 text-sm outline-none focus:border-gold"
+            />
+          </div>
+          <div>
+            <label htmlFor="excerpt" className="text-sm font-medium">
+              Kivonat
+            </label>
+            <textarea
+              id="excerpt"
+              rows={2}
+              value={doc.excerpt}
+              onChange={(e) => patchDoc({ excerpt: e.target.value })}
+              className="mt-1.5 w-full rounded-lg border border-border bg-background/40 px-3.5 py-2.5 text-sm outline-none focus:border-gold"
+            />
+          </div>
+          <p className="text-xs text-muted-foreground">
+            {doc.locale.toUpperCase()} · /{doc.slug} · {doc.status === "published" ? "Publikálva" : "Piszkozat"}
+          </p>
+          <SeoPanel seo={doc.seo} onChange={(seo) => patchDoc({ seo })} />
         </div>
-        <div>
-          <label htmlFor="excerpt" className="text-sm font-medium">
-            Kivonat
-          </label>
-          <textarea
-            id="excerpt"
-            rows={2}
-            value={doc.excerpt}
-            onChange={(e) => patchDoc({ excerpt: e.target.value })}
-            className="mt-1.5 w-full rounded-lg border border-border bg-background/40 px-3.5 py-2.5 text-sm outline-none focus:border-gold"
-          />
-        </div>
-        <p className="text-xs text-muted-foreground">
-          {doc.locale.toUpperCase()} · /{doc.slug} · {doc.status === "published" ? "Publikálva" : "Piszkozat"}
-        </p>
-        <SeoPanel seo={doc.seo} onChange={(seo) => patchDoc({ seo })} />
       </div>
 
-      <div className="mt-6 flex items-center gap-1.5">
+      <div className="mx-auto mt-6 flex max-w-3xl items-center gap-1.5">
         {(
           [
-            { id: "edit", label: "Szerkesztés" },
+            { id: "edit", label: "Vászon" },
             { id: "preview", label: "Élő előnézet" },
           ] as const
         ).map((m) => (
@@ -291,72 +323,99 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
         ))}
       </div>
 
-      {mode === "preview" && <PostPreview title={doc.title} excerpt={doc.excerpt} blocks={doc.blocks} />}
+      {mode === "preview" && (
+        <div className="mx-auto max-w-3xl">
+          <PostPreview title={doc.title} excerpt={doc.excerpt} blocks={doc.blocks} />
+        </div>
+      )}
 
-      <div className={mode === "preview" ? "hidden" : undefined}>
-      <DndContext
-        // dnd-kit's default id generation is a plain module-level counter,
-        // not React's request-scoped useId — across multiple SSR requests
-        // in the same warm server process it drifts from the client's
-        // count and produces a hydration mismatch. An explicit, stable id
-        // sidesteps the counter entirely.
-        id="post-editor-dnd"
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
-        onDragCancel={() => {
-          setDragState(null);
-          setOverInfo(null);
-        }}
-      >
-        <BuilderDndUiProvider value={{ dragState, overInfo }}>
-          <div className="mt-6 flex flex-col gap-4">
-            <SortableContext items={doc.blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
-              {doc.blocks.map((block, i) => (
-                <SortableBlockCard
-                  key={block.id}
-                  block={block}
-                  containerId={ROOT_CONTAINER}
-                  index={i}
-                  onChange={(next) => updateBlock(block.id, next)}
-                  onMoveUp={() => moveBlock(block.id, -1)}
-                  onMoveDown={() => moveBlock(block.id, 1)}
-                  onDelete={() => deleteBlock(block.id)}
-                  canMoveUp={i > 0}
-                  canMoveDown={i < doc.blocks.length - 1}
-                />
-              ))}
-            </SortableContext>
-            {doc.blocks.length === 0 && <TemplatePicker onSelect={(blocks) => patchDoc({ blocks })} />}
-            <ContainerEndDropZone id="canvas-end" active={dragState !== null} />
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-2">
-            {ADDABLE_TYPES.map(({ type, label }) => (
-              <PaletteItem key={type} type={type} label={label} onClick={() => addBlock(type)} />
-            ))}
-          </div>
-
-          <DragOverlay>
-            {dragState?.type === "palette" && (
-              <div className="rounded-full border border-gold/50 bg-card px-4 py-2 text-sm font-medium shadow-lg shadow-black/20">
-                {TYPE_LABELS[dragState.blockType]}
+      <div className={mode === "preview" ? "hidden" : "mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px] lg:items-start"}>
+        <DndContext
+          // dnd-kit's default id generation is a plain module-level counter,
+          // not React's request-scoped useId — across multiple SSR requests
+          // in the same warm server process it drifts from the client's
+          // count and produces a hydration mismatch. An explicit, stable id
+          // sidesteps the counter entirely.
+          id="post-editor-dnd"
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+          onDragCancel={() => {
+            setDragState(null);
+            setOverInfo(null);
+          }}
+        >
+          <BuilderDndUiProvider value={{ dragState, overInfo }}>
+            <div className="min-w-0 rounded-2xl border border-border bg-card/30 p-4 sm:p-6" onClick={() => setSelectedBlockId(null)}>
+              <div className="flex flex-col gap-6" onClick={(e) => e.stopPropagation()}>
+                <SortableContext items={doc.blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
+                  {doc.blocks.map((block, i) => (
+                    <CanvasBlock
+                      key={block.id}
+                      block={block}
+                      containerId={ROOT_CONTAINER}
+                      index={i}
+                      selectedId={selectedBlockId}
+                      onSelect={setSelectedBlockId}
+                      onDelete={deleteBlockById}
+                      onAddBlock={addBlockToContainer}
+                    />
+                  ))}
+                </SortableContext>
+                {doc.blocks.length === 0 && <TemplatePicker onSelect={(blocks) => patchDoc({ blocks })} />}
+                <ContainerEndDropZone id="canvas-end" active={dragState !== null} />
               </div>
-            )}
-            {dragState?.type === "block" &&
-              (() => {
-                const block = findBlock(doc.blocks, dragState.blockId);
-                return block ? (
-                  <div className="rounded-2xl border border-gold/50 bg-card px-5 py-3 text-sm font-medium shadow-lg shadow-black/20">
-                    {TYPE_LABELS[block.type]}
-                  </div>
-                ) : null;
-              })()}
-          </DragOverlay>
-        </BuilderDndUiProvider>
-      </DndContext>
+
+              <div className="mt-6 flex flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
+                {ADDABLE_TYPES.map(({ type, label }) => (
+                  <PaletteItem
+                    key={type}
+                    type={type}
+                    label={label}
+                    onClick={() => addBlockToContainer(ROOT_CONTAINER, type)}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <DragOverlay>
+              {dragState?.type === "palette" && (
+                <div className="rounded-full border border-gold/50 bg-card px-4 py-2 text-sm font-medium shadow-lg shadow-black/20">
+                  {TYPE_LABELS[dragState.blockType]}
+                </div>
+              )}
+              {dragState?.type === "block" &&
+                (() => {
+                  const block = findBlock(doc.blocks, dragState.blockId);
+                  return block ? (
+                    <div className="rounded-2xl border border-gold/50 bg-card px-5 py-3 text-sm font-medium shadow-lg shadow-black/20">
+                      {TYPE_LABELS[block.type]}
+                    </div>
+                  ) : null;
+                })()}
+            </DragOverlay>
+          </BuilderDndUiProvider>
+        </DndContext>
+
+        <div className="lg:sticky lg:top-6">
+          {selectedBlock ? (
+            <BlockEditorCard
+              block={selectedBlock}
+              onChange={(next) => updateBlockById(selectedBlock.id, next)}
+              onMoveUp={() => moveBlockById(selectedBlock.id, -1)}
+              onMoveDown={() => moveBlockById(selectedBlock.id, 1)}
+              onDelete={() => deleteBlockById(selectedBlock.id)}
+              canMoveUp={selectedIndex > 0}
+              canMoveDown={selectedIndex >= 0 && selectedIndex < selectedContainerBlocks.length - 1}
+            />
+          ) : (
+            <p className="rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+              Válassz egy blokkot a vásznon a szerkesztéshez.
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

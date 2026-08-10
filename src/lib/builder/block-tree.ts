@@ -99,12 +99,13 @@ export function moveBlockInTree(
   const moving = source[sourceIndex];
 
   if (sourceContainerId === destContainerId) {
-    // Removing the item first shifts every later index left by one, so a
-    // target position that was after it needs the same adjustment.
-    const adjusted = destIndexOriginal > sourceIndex ? destIndexOriginal - 1 : destIndexOriginal;
+    // Same convention as dnd-kit's own arrayMove: remove first, then insert
+    // at destIndexOriginal directly into the now-shortened array. No extra
+    // shift correction — splice-after-splice already accounts for the gap
+    // left by the removal, in both directions.
     const next = [...source];
     next.splice(sourceIndex, 1);
-    next.splice(Math.max(0, Math.min(adjusted, next.length)), 0, moving);
+    next.splice(Math.max(0, Math.min(destIndexOriginal, next.length)), 0, moving);
     return setContainerBlocks(blocks, sourceContainerId, next);
   }
 
