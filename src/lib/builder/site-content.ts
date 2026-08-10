@@ -1,8 +1,13 @@
 import "server-only";
+import { unstable_cache } from "next/cache";
 import type { Locale } from "@/lib/i18n/config";
 import { getPool, ensureSchema, SITE_SECTIONS_TABLE } from "./db";
 import type { SectionKey } from "./site-content-schema";
 import { SECTION_KEYS } from "./site-content-schema";
+
+export function siteSectionsCacheTag(locale: Locale): string {
+  return `site-sections-${locale}`;
+}
 
 export async function getSectionOverride(locale: Locale, key: SectionKey): Promise<unknown | null> {
   await ensureSchema();
@@ -43,4 +48,16 @@ export async function listSectionOverrides(locale: Locale): Promise<Partial<Reco
     }
   }
   return result;
+}
+
+/**
+ * Cached, tag-scoped version of listSectionOverrides for the public homepage.
+ * A fresh unstable_cache wrapper is created per call so its tag can depend on
+ * `locale` — the cache key itself comes from the keyParts array below, so this
+ * still correctly caches per locale rather than colliding across calls.
+ */
+export function getCachedSectionOverrides(locale: Locale): Promise<Partial<Record<SectionKey, unknown>>> {
+  return unstable_cache(() => listSectionOverrides(locale), ["site-sections", locale], {
+    tags: [siteSectionsCacheTag(locale)],
+  })();
 }

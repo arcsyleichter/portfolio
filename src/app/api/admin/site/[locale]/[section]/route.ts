@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { isLocale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { hasAdminSession } from "@/lib/builder/auth";
-import { getSectionOverride, saveSectionOverride, clearSectionOverride } from "@/lib/builder/site-content";
+import {
+  getSectionOverride,
+  saveSectionOverride,
+  clearSectionOverride,
+  siteSectionsCacheTag,
+} from "@/lib/builder/site-content";
 import { isSectionKey } from "@/lib/builder/site-content-schema";
 import { sectionContentSchemas } from "@/lib/builder/validate";
 
@@ -49,7 +54,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
   }
 
   await saveSectionOverride(locale, section, parsed.data);
-  revalidatePath(`/${locale}`);
+  revalidateTag(siteSectionsCacheTag(locale), "max");
 
   return NextResponse.json({ content: parsed.data });
 }
@@ -64,7 +69,7 @@ export async function DELETE(_request: Request, { params }: RouteParams) {
   }
 
   await clearSectionOverride(locale, section);
-  revalidatePath(`/${locale}`);
+  revalidateTag(siteSectionsCacheTag(locale), "max");
 
   const dict = getDictionary(locale);
   return NextResponse.json({ content: dict[section] });
