@@ -15,6 +15,12 @@ export default async function AdminPostsPage() {
         </div>
         <div className="flex items-center gap-3">
           <Link
+            href="/admin/site"
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
+            Főoldal szerkesztése →
+          </Link>
+          <Link
             href="/admin/posts/new"
             className="cursor-pointer rounded-full bg-gradient-brand px-4 py-2 text-sm font-semibold text-ink shadow-lg shadow-gold/20 transition-transform hover:scale-105"
           >
