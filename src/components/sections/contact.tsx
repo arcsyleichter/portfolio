@@ -10,8 +10,8 @@ import { GradientBackground } from "@/components/ui/gradient-background";
 
 type Status = "idle" | "sending" | "success" | "error";
 
-export function Contact({ dict }: { dict: Dictionary }) {
-  const c = dict.contact;
+export function Contact({ dict, override }: { dict: Dictionary; override?: Dictionary["contact"] }) {
+  const c = override ?? dict.contact;
   const [status, setStatus] = useState<Status>("idle");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {

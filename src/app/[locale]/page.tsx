@@ -45,7 +45,7 @@ export default async function HomePage({
       <TechStack dict={dict} override={overrides.tech as Dictionary["tech"] | undefined} />
       <Testimonials dict={dict} override={overrides.testimonials as Dictionary["testimonials"] | undefined} />
       <Pricing locale={typedLocale} dict={dict} override={overrides.pricing as Dictionary["pricing"] | undefined} />
-      <Contact dict={dict} />
+      <Contact dict={dict} override={overrides.contact as Dictionary["contact"] | undefined} />
     </>
   );
 }
