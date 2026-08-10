@@ -36,6 +36,7 @@ const TABLE_SUFFIX = process.env.RENDER ? "" : "_dev";
 export const POSTS_TABLE = `posts${TABLE_SUFFIX}`;
 export const IMAGES_TABLE = `images${TABLE_SUFFIX}`;
 export const SITE_SECTIONS_TABLE = `site_sections${TABLE_SUFFIX}`;
+export const PAGE_LAYOUT_TABLE = `page_layout${TABLE_SUFFIX}`;
 
 let schemaReady: Promise<void> | null = null;
 
@@ -65,6 +66,11 @@ export function ensureSchema(): Promise<void> {
           content JSONB NOT NULL,
           updated_at TEXT NOT NULL,
           PRIMARY KEY (locale, section_key)
+        );
+        CREATE TABLE IF NOT EXISTS ${PAGE_LAYOUT_TABLE} (
+          locale TEXT PRIMARY KEY,
+          items JSONB NOT NULL,
+          updated_at TEXT NOT NULL
         );
         `,
       )

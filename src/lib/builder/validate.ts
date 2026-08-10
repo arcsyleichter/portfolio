@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { locales } from "@/lib/i18n/config";
 import type { Block } from "./types";
-import type { SectionKey } from "./site-content-schema";
+import { SECTION_KEYS, type SectionKey } from "./site-content-schema";
 
 const animationSchema = z.object({
   trigger: z.enum(["onLoad", "onScroll", "onHover", "none"]),
@@ -306,3 +306,53 @@ export const sectionContentSchemas: Record<SectionKey, z.ZodType> = {
   pricing: pricingContentSchema,
   contact: contactContentSchema,
 };
+
+// --- Homepage page layout (composition) ------------------------------------
+//
+// A page_layout row is an ordered list of PageItem — either a pointer to one
+// of the 10 built-in sections (reorderable, hideable, never deletable) or a
+// freeform Block reusing blockSchema unchanged. See the plan for why
+// membership of the 10 section keys is a hard schema invariant rather than a
+// UI convention.
+
+const sectionPageItemSchema = z.object({
+  id: z.enum(SECTION_KEYS),
+  kind: z.literal("section"),
+  sectionKey: z.enum(SECTION_KEYS),
+  hidden: z.boolean(),
+});
+
+const blockPageItemSchema = z.object({
+  id: z.string().min(1),
+  kind: z.literal("block"),
+  block: blockSchema,
+});
+
+export const pageItemSchema = z.discriminatedUnion("kind", [sectionPageItemSchema, blockPageItemSchema]);
+
+export const pageLayoutSchema = z
+  .array(pageItemSchema)
+  .superRefine((items, ctx) => {
+    const sectionItems = items.filter((item) => item.kind === "section");
+    const seen = new Map<SectionKey, number>();
+    sectionItems.forEach((item, i) => {
+      if (item.id !== item.sectionKey) {
+        ctx.addIssue({
+          code: "custom",
+          message: `section item id "${item.id}" must equal its sectionKey "${item.sectionKey}"`,
+          path: [i],
+        });
+      }
+      seen.set(item.sectionKey, (seen.get(item.sectionKey) ?? 0) + 1);
+    });
+    for (const key of SECTION_KEYS) {
+      const count = seen.get(key) ?? 0;
+      if (count !== 1) {
+        ctx.addIssue({
+          code: "custom",
+          message: `section "${key}" must appear exactly once (found ${count})`,
+          path: [],
+        });
+      }
+    }
+  });
