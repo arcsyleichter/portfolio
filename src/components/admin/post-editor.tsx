@@ -33,6 +33,7 @@ import { TemplatePicker } from "./template-picker";
 import { SeoPanel } from "./seo-panel";
 import { ContainerEndDropZone } from "./container-end-drop-zone";
 import { BuilderDndUiProvider, type BuilderDragState } from "./builder-dnd-ui-context";
+import { PostPreview } from "./post-preview";
 
 const ADDABLE_TYPES: { type: BlockType; label: string }[] = [
   { type: "heading", label: "+ Cím" },
@@ -56,6 +57,7 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
   const [dragState, setDragState] = useState<BuilderDragState>(null);
   const [overInfo, setOverInfo] = useState<{ containerId: ContainerId; index: number } | null>(null);
+  const [mode, setMode] = useState<"edit" | "preview">("edit");
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -267,6 +269,31 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
         <SeoPanel seo={doc.seo} onChange={(seo) => patchDoc({ seo })} />
       </div>
 
+      <div className="mt-6 flex items-center gap-1.5">
+        {(
+          [
+            { id: "edit", label: "Szerkesztés" },
+            { id: "preview", label: "Élő előnézet" },
+          ] as const
+        ).map((m) => (
+          <button
+            key={m.id}
+            type="button"
+            onClick={() => setMode(m.id)}
+            className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+              mode === m.id
+                ? "border-gold/50 bg-gold/10 text-foreground"
+                : "border-border text-muted-foreground hover:bg-muted"
+            }`}
+          >
+            {m.label}
+          </button>
+        ))}
+      </div>
+
+      {mode === "preview" && <PostPreview title={doc.title} excerpt={doc.excerpt} blocks={doc.blocks} />}
+
+      <div className={mode === "preview" ? "hidden" : undefined}>
       <DndContext
         // dnd-kit's default id generation is a plain module-level counter,
         // not React's request-scoped useId — across multiple SSR requests
@@ -330,6 +357,7 @@ export function PostEditor({ initialDoc }: { initialDoc: BlogPostDocument }) {
           </DragOverlay>
         </BuilderDndUiProvider>
       </DndContext>
+      </div>
     </div>
   );
 }
