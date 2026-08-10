@@ -10,6 +10,7 @@ import { ImageUploadField } from "./image-upload-field";
 import { SortableBlockCard } from "./sortable-block-card";
 import { ContainerEndDropZone } from "./container-end-drop-zone";
 import { useBuilderDndUi } from "./builder-dnd-ui-context";
+import { AnimationPanel } from "./animation-panel";
 
 const FIELD_CLASS =
   "w-full rounded-lg border border-border bg-background/40 px-3.5 py-2.5 text-sm outline-none focus:border-gold";
@@ -488,6 +489,8 @@ export function BlockEditorCard({
         {block.type === "carousel" && <CarouselBlockEditor block={block} onChange={onChange} />}
         {block.type === "cta" && <CtaBlockEditor block={block} onChange={onChange} />}
       </div>
+
+      <AnimationPanel block={block} onChange={onChange} />
     </div>
   );
 }
