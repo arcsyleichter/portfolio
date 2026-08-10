@@ -1,4 +1,4 @@
-import type { Block, BlockType, BlogPostDocument } from "./types";
+import type { Block, BlockType, BlogPostDocument, CustomPageDocument } from "./types";
 
 function id(): string {
   return crypto.randomUUID();
@@ -98,6 +98,19 @@ export function createEmptyDocument(locale: BlogPostDocument["locale"], slug: st
     locale,
     title: "",
     excerpt: "",
+    status: "draft",
+    createdAt: now,
+    updatedAt: now,
+    blocks: [],
+  };
+}
+
+export function createEmptyCustomPage(locale: CustomPageDocument["locale"], slug: string): CustomPageDocument {
+  const now = new Date().toISOString();
+  return {
+    slug,
+    locale,
+    title: "",
     status: "draft",
     createdAt: now,
     updatedAt: now,

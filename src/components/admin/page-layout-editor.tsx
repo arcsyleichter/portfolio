@@ -218,6 +218,9 @@ export function PageLayoutEditor() {
           ← Bejegyzésekhez
         </Link>
         <div className="flex items-center gap-3">
+          <Link href="/admin/pages" className="text-sm text-muted-foreground hover:text-foreground">
+            Egyedi oldalak →
+          </Link>
           {error && (
             <p className="text-sm text-destructive" role="alert">
               {error}
