@@ -38,7 +38,7 @@ import { ContainerEndDropZone } from "./container-end-drop-zone";
 import { BuilderDndUiProvider, type BuilderDragState } from "./builder-dnd-ui-context";
 import { PostPreview } from "./post-preview";
 
-const ADDABLE_TYPES: { type: BlockType; label: string }[] = [
+export const ADDABLE_TYPES: { type: BlockType; label: string }[] = [
   { type: "heading", label: "+ Cím" },
   { type: "richtext", label: "+ Szöveg" },
   { type: "image", label: "+ Kép" },

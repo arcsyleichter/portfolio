@@ -8,6 +8,8 @@ import type { PageItem } from "@/lib/builder/page-layout-types";
 import type { SectionKey } from "@/lib/builder/site-content-schema";
 import { getSectionSchema } from "@/lib/builder/site-sections";
 import { SECTION_COMPONENTS } from "@/components/sections/section-registry";
+import { TYPE_LABELS } from "./block-editor-card";
+import { CanvasBlockView } from "./canvas-block-view";
 
 interface Props {
   item: PageItem;
@@ -17,13 +19,24 @@ interface Props {
   selected: boolean;
   onSelect: (id: string) => void;
   onToggleHidden: (id: string) => void;
+  onDeleteBlock: (id: string) => void;
 }
 
-export function PageLayoutItem({ item, locale, dict, overrides, selected, onSelect, onToggleHidden }: Props) {
+export function PageLayoutItem({
+  item,
+  locale,
+  dict,
+  overrides,
+  selected,
+  onSelect,
+  onToggleHidden,
+  onDeleteBlock,
+}: Props) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: item.id });
   const style = { transform: CSS.Transform.toString(transform), transition };
 
-  const label = item.kind === "section" ? getSectionSchema(item.sectionKey)?.label ?? item.sectionKey : "Blokk";
+  const label =
+    item.kind === "section" ? (getSectionSchema(item.sectionKey)?.label ?? item.sectionKey) : TYPE_LABELS[item.block.type];
   const hidden = item.kind === "section" && item.hidden;
 
   return (
@@ -44,7 +57,7 @@ export function PageLayoutItem({ item, locale, dict, overrides, selected, onSele
               {...attributes}
               {...listeners}
               onClick={(e) => e.stopPropagation()}
-              aria-label="Szekció húzása az átrendezéshez"
+              aria-label="Húzása az átrendezéshez"
               title="Húzd az átrendezéshez"
               style={{ touchAction: "none" }}
               className="flex h-6 w-6 cursor-grab items-center justify-center rounded-full hover:bg-ink/10 active:cursor-grabbing"
@@ -59,7 +72,7 @@ export function PageLayoutItem({ item, locale, dict, overrides, selected, onSele
               </svg>
             </button>
             <span className="px-1 text-xs font-semibold">{label}</span>
-            {item.kind === "section" && (
+            {item.kind === "section" ? (
               <button
                 type="button"
                 onClick={(e) => {
@@ -72,20 +85,45 @@ export function PageLayoutItem({ item, locale, dict, overrides, selected, onSele
               >
                 {hidden ? "Megjelenítés" : "Elrejtés"}
               </button>
+            ) : (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDeleteBlock(item.id);
+                }}
+                aria-label="Blokk törlése"
+                title="Törlés"
+                className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:bg-ink/10"
+              >
+                ×
+              </button>
             )}
           </div>
         )}
 
-        {hidden ? (
-          <div className="flex items-center justify-between rounded-xl border border-dashed border-border bg-card/30 px-5 py-4 text-sm text-muted-foreground">
-            <span>{label}</span>
-            <span className="rounded-full border border-border px-2.5 py-1 text-xs">Rejtve</span>
+        {item.kind === "section" ? (
+          hidden ? (
+            <div className="flex items-center justify-between rounded-xl border border-dashed border-border bg-card/30 px-5 py-4 text-sm text-muted-foreground">
+              <span>{label}</span>
+              <span className="rounded-full border border-border px-2.5 py-1 text-xs">Rejtve</span>
+            </div>
+          ) : (
+            <div className="pointer-events-none">
+              {SECTION_COMPONENTS[item.sectionKey]({ locale, dict, overrides })}
+            </div>
+          )
+        ) : (
+          <div className="pointer-events-none px-4 py-6 sm:px-6">
+            <CanvasBlockView
+              block={item.block}
+              selectedId={null}
+              onSelect={() => {}}
+              onDelete={() => {}}
+              onAddBlock={() => {}}
+            />
           </div>
-        ) : item.kind === "section" ? (
-          <div className="pointer-events-none">
-            {SECTION_COMPONENTS[item.sectionKey]({ locale, dict, overrides })}
-          </div>
-        ) : null}
+        )}
       </div>
     </div>
   );
