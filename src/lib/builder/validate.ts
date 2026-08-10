@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { locales } from "@/lib/i18n/config";
 import type { Block } from "./types";
+import type { SectionKey } from "./site-content-schema";
 
 const animationSchema = z.object({
   trigger: z.enum(["onLoad", "onScroll", "onHover", "none"]),
@@ -156,3 +157,150 @@ export const blogPostDocumentSchema = z.object({
     .optional(),
   blocks: z.array(blockSchema),
 });
+
+// --- Homepage section content ---------------------------------------------
+//
+// Each schema mirrors one root key of the i18n dictionaries exactly (see
+// src/lib/i18n/dictionaries/hu.json). Object arrays use .length(N) matching
+// today's exact count — items are index/id-coupled to hardcoded icons,
+// gradients, or mockup lookups in the section components, so cardinality is
+// a deliberate v1 constraint (edit each item in place; no add/remove/
+// reorder — see the plan). Plain string-list fields (no such coupling) use
+// a looser bound instead of forcing an exact count.
+
+const stat = z.object({ value: z.string().max(20), label: z.string().max(200) });
+
+const heroContentSchema = z.object({
+  eyebrow: z.string().max(200),
+  title1: z.string().max(200),
+  title2: z.string().max(200),
+  subtitle: z.string().max(500),
+  ctaPrimary: z.string().max(60),
+  ctaSecondary: z.string().max(60),
+  stats: z.array(stat).length(3),
+});
+
+const aboutContentSchema = z.object({
+  eyebrow: z.string().max(200),
+  title: z.string().max(300),
+  paragraphs: z.array(z.string().max(500)).min(1).max(8),
+  highlights: z.array(z.string().max(200)).min(1).max(8),
+});
+
+const serviceItem = z.object({
+  title: z.string().max(200),
+  description: z.string().max(500),
+  tags: z.array(z.string().max(40)).min(0).max(8),
+});
+
+const servicesContentSchema = z.object({
+  eyebrow: z.string().max(200),
+  title: z.string().max(300),
+  subtitle: z.string().max(500),
+  items: z.array(serviceItem).length(3),
+});
+
+const projectItem = z.object({
+  id: z.string().max(60),
+  kind: z.enum(["live", "demo"]),
+  title: z.string().max(200),
+  summary: z.string().max(500),
+  tags: z.array(z.string().max(40)).min(0).max(8),
+});
+
+const projectsContentSchema = z.object({
+  eyebrow: z.string().max(200),
+  title: z.string().max(300),
+  subtitle: z.string().max(500),
+  liveBadge: z.string().max(60),
+  demoBadge: z.string().max(60),
+  demoNote: z.string().max(500),
+  cta: z.string().max(60),
+  items: z.array(projectItem).length(4),
+});
+
+const styleItem = z.object({
+  id: z.string().max(60),
+  name: z.string().max(100),
+  audience: z.string().max(200),
+});
+
+const styleShowcaseContentSchema = z.object({
+  eyebrow: z.string().max(200),
+  title: z.string().max(300),
+  subtitle: z.string().max(500),
+  styles: z.array(styleItem).length(10),
+});
+
+const processStep = z.object({
+  title: z.string().max(100),
+  description: z.string().max(500),
+});
+
+const processContentSchema = z.object({
+  eyebrow: z.string().max(200),
+  title: z.string().max(300),
+  steps: z.array(processStep).length(6),
+});
+
+const techCategory = z.object({
+  name: z.string().max(100),
+  items: z.array(z.string().max(60)).min(1).max(10),
+});
+
+const techContentSchema = z.object({
+  eyebrow: z.string().max(200),
+  title: z.string().max(300),
+  categories: z.array(techCategory).length(4),
+});
+
+const testimonialsContentSchema = z.object({
+  eyebrow: z.string().max(200),
+  title: z.string().max(300),
+  comingSoon: z.string().max(300),
+});
+
+const pricingTier = z.object({
+  name: z.string().max(100),
+  description: z.string().max(300),
+  features: z.array(z.string().max(100)).min(0).max(10),
+  highlighted: z.boolean(),
+});
+
+const pricingContentSchema = z.object({
+  eyebrow: z.string().max(200),
+  title: z.string().max(300),
+  subtitle: z.string().max(500),
+  cta: z.string().max(60),
+  customNote: z.string().max(300),
+  tiers: z.array(pricingTier).length(3),
+});
+
+const contactContentSchema = z.object({
+  eyebrow: z.string().max(200),
+  title: z.string().max(300),
+  subtitle: z.string().max(500),
+  formName: z.string().max(60),
+  formEmail: z.string().max(60),
+  formCompany: z.string().max(60),
+  formMessage: z.string().max(60),
+  formSubmit: z.string().max(60),
+  formSending: z.string().max(60),
+  formSuccess: z.string().max(300),
+  formError: z.string().max(300),
+  directTitle: z.string().max(100),
+  emailLabel: z.string().max(60),
+});
+
+export const sectionContentSchemas: Record<SectionKey, z.ZodType> = {
+  hero: heroContentSchema,
+  about: aboutContentSchema,
+  services: servicesContentSchema,
+  projects: projectsContentSchema,
+  styleShowcase: styleShowcaseContentSchema,
+  process: processContentSchema,
+  tech: techContentSchema,
+  testimonials: testimonialsContentSchema,
+  pricing: pricingContentSchema,
+  contact: contactContentSchema,
+};
