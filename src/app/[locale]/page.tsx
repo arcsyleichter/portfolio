@@ -37,14 +37,14 @@ export default async function HomePage({
   return (
     <>
       <Hero locale={typedLocale} dict={dict} />
-      <About dict={dict} />
+      <About dict={dict} override={overrides.about as Dictionary["about"] | undefined} />
       <Services dict={dict} />
       <Projects dict={dict} />
       <StyleShowcase dict={dict} />
       <Process dict={dict} override={overrides.process as Dictionary["process"] | undefined} />
       <TechStack dict={dict} override={overrides.tech as Dictionary["tech"] | undefined} />
       <Testimonials dict={dict} override={overrides.testimonials as Dictionary["testimonials"] | undefined} />
-      <Pricing locale={typedLocale} dict={dict} />
+      <Pricing locale={typedLocale} dict={dict} override={overrides.pricing as Dictionary["pricing"] | undefined} />
       <Contact dict={dict} />
     </>
   );

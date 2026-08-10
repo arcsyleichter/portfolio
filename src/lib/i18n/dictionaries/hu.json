@@ -40,7 +40,8 @@
       "Olyan rendszerek, amik több ügyfelet is biztonságosan kiszolgálnak",
       "AI, ami tényleg leveszi a munkát a válladról — nem csak dísz",
       "Végigviszem a projektet: tervezéstől a support-ig, és utána sem tűnök el"
-    ]
+    ],
+    "highlightsLabel": "Kiemelt pontok"
   },
   "services": {
     "eyebrow": "Szolgáltatások",
@@ -153,6 +154,7 @@
     "subtitle": "Minden projekt más — ezek csak kiindulópontok, a pontos árat a feladat mérete és mélysége határozza meg, közös egyeztetés után.",
     "customNote": "A fenti tartalom tájékoztató jellegű — a pontos ár és határidő mindig az adott projekttől függ.",
     "cta": "Ajánlatot kérek",
+    "popularLabel": "Népszerű",
     "tiers": [
       {
         "name": "Bemutatkozó oldal",

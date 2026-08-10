@@ -185,6 +185,7 @@ const aboutContentSchema = z.object({
   title: z.string().max(300),
   paragraphs: z.array(z.string().max(500)).min(1).max(8),
   highlights: z.array(z.string().max(200)).min(1).max(8),
+  highlightsLabel: z.string().max(60),
 });
 
 const serviceItem = z.object({
@@ -273,6 +274,7 @@ const pricingContentSchema = z.object({
   subtitle: z.string().max(500),
   cta: z.string().max(60),
   customNote: z.string().max(300),
+  popularLabel: z.string().max(60),
   tiers: z.array(pricingTier).length(3),
 });
 

@@ -40,7 +40,8 @@
       "Systems that keep multiple clients' data safely separated",
       "AI that actually takes work off your plate — not just for show",
       "I see projects through: planning to support, and I don't vanish after launch"
-    ]
+    ],
+    "highlightsLabel": "Highlights"
   },
   "services": {
     "eyebrow": "Services",
@@ -153,6 +154,7 @@
     "subtitle": "Every project's different — these are starting points. The real price depends on the size and depth of the work, set together after we talk.",
     "customNote": "The content above is for reference — the final price and timeline always depend on the specific project.",
     "cta": "Request a quote",
+    "popularLabel": "Popular",
     "tiers": [
       {
         "name": "Landing page",

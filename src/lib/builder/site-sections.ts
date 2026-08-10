@@ -33,6 +33,7 @@ export const SITE_SECTION_SCHEMAS: SectionSchema[] = [
       { key: "title", label: "Cím", field: { kind: "string" } },
       { key: "paragraphs", label: "Bekezdések", field: { kind: "stringArray", itemLabel: "Bekezdés", maxLength: 500 } },
       { key: "highlights", label: "Kiemelések", field: { kind: "stringArray", itemLabel: "Kiemelés", maxLength: 200 } },
+      { key: "highlightsLabel", label: "Kiemelések doboz címe", field: { kind: "string" } },
     ],
   },
   {
@@ -175,6 +176,7 @@ export const SITE_SECTION_SCHEMAS: SectionSchema[] = [
       { key: "subtitle", label: "Alcím", field: { kind: "text" } },
       { key: "cta", label: "Gomb szövege", field: { kind: "string" } },
       { key: "customNote", label: "Záró megjegyzés", field: { kind: "text" } },
+      { key: "popularLabel", label: "\"Kiemelt\" jelvény szövege", field: { kind: "string" } },
       {
         key: "tiers",
         label: "Csomagok",

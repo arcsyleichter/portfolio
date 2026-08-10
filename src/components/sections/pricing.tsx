@@ -5,8 +5,8 @@ import { Reveal } from "@/components/motion/reveal";
 import { GradientBackground } from "@/components/ui/gradient-background";
 import { SectionHeader } from "./section-header";
 
-export function Pricing({ locale, dict }: { locale: Locale; dict: Dictionary }) {
-  const pr = dict.pricing;
+export function Pricing({ locale, dict, override }: { locale: Locale; dict: Dictionary; override?: Dictionary["pricing"] }) {
+  const pr = override ?? dict.pricing;
 
   return (
     <section
@@ -29,7 +29,7 @@ export function Pricing({ locale, dict }: { locale: Locale; dict: Dictionary }) 
               >
                 {tier.highlighted && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-brand px-3 py-1 text-xs font-semibold text-ink">
-                    Popular
+                    {pr.popularLabel}
                   </span>
                 )}
                 <h3 className="font-heading text-lg font-semibold">{tier.name}</h3>

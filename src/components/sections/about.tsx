@@ -3,8 +3,8 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { Reveal } from "@/components/motion/reveal";
 import { GradientBackground } from "@/components/ui/gradient-background";
 
-export function About({ dict }: { dict: Dictionary }) {
-  const a = dict.about;
+export function About({ dict, override }: { dict: Dictionary; override?: Dictionary["about"] }) {
+  const a = override ?? dict.about;
 
   return (
     <section
@@ -28,7 +28,7 @@ export function About({ dict }: { dict: Dictionary }) {
         <Reveal delay={0.15} className="lg:col-span-2">
           <div className="rounded-2xl border border-border bg-card/60 p-6 shadow-md shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:border-gold/40 hover:shadow-lg hover:shadow-black/20">
             <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-              Highlights
+              {a.highlightsLabel}
             </h3>
             <ul className="mt-4 space-y-4">
               {a.highlights.map((item, i) => (
