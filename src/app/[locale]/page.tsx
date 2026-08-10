@@ -36,7 +36,7 @@ export default async function HomePage({
 
   return (
     <>
-      <Hero locale={typedLocale} dict={dict} />
+      <Hero locale={typedLocale} dict={dict} override={overrides.hero as Dictionary["hero"] | undefined} />
       <About dict={dict} override={overrides.about as Dictionary["about"] | undefined} />
       <Services dict={dict} override={overrides.services as Dictionary["services"] | undefined} />
       <Projects dict={dict} override={overrides.projects as Dictionary["projects"] | undefined} />

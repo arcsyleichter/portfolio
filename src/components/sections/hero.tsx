@@ -20,8 +20,8 @@ const titleWord = {
   },
 };
 
-export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
-  const h = dict.hero;
+export function Hero({ locale, dict, override }: { locale: Locale; dict: Dictionary; override?: Dictionary["hero"] }) {
+  const h = override ?? dict.hero;
 
   return (
     <section className="section-dark relative isolate min-h-[560px] overflow-hidden bg-background px-4 pb-20 pt-16 text-foreground sm:min-h-[640px] sm:px-6 sm:pt-24 lg:min-h-[720px] lg:pt-28">
