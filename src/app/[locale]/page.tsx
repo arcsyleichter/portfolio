@@ -38,8 +38,8 @@ export default async function HomePage({
     <>
       <Hero locale={typedLocale} dict={dict} />
       <About dict={dict} override={overrides.about as Dictionary["about"] | undefined} />
-      <Services dict={dict} />
-      <Projects dict={dict} />
+      <Services dict={dict} override={overrides.services as Dictionary["services"] | undefined} />
+      <Projects dict={dict} override={overrides.projects as Dictionary["projects"] | undefined} />
       <StyleShowcase dict={dict} />
       <Process dict={dict} override={overrides.process as Dictionary["process"] | undefined} />
       <TechStack dict={dict} override={overrides.tech as Dictionary["tech"] | undefined} />

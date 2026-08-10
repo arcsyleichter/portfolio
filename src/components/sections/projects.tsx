@@ -12,8 +12,8 @@ const icons: Record<ProjectId, typeof Bot> = {
   "auto-reporting": FileSpreadsheet,
 };
 
-export function Projects({ dict }: { dict: Dictionary }) {
-  const p = dict.projects;
+export function Projects({ dict, override }: { dict: Dictionary; override?: Dictionary["projects"] }) {
+  const p = override ?? dict.projects;
 
   return (
     <section

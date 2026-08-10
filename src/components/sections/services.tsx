@@ -9,8 +9,8 @@ import { SectionHeader } from "./section-header";
 
 const icons = [LayoutDashboard, Bot, Rocket];
 
-export function Services({ dict }: { dict: Dictionary }) {
-  const s = dict.services;
+export function Services({ dict, override }: { dict: Dictionary; override?: Dictionary["services"] }) {
+  const s = override ?? dict.services;
 
   return (
     <section
